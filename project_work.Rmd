@@ -4,24 +4,21 @@ output: html_document
 ---
 
 # Content
+
 The main dataset includes information for 732 Norwegian words. A second table also includes measures of how frequently each word is used in Norwegian, both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The latter is commonly called “child directed speech” and is abbreviated as “CDS”. 
 Main data
-•	IDCDII: Word ID from the Norwegian adaptation of the MacArthur-Bates Communicative Development Inventories, version 1
-•	IDCDIII: Word ID from the Norwegian adaptation of the MacArthur-Bates Communicative Development Inventories, version 2
-•	Word_NW: The word in Norwegian
-•	Word_CDI: The form of the word found in the Norwegian adaptation of the MacArthur-Bates Communicative Development Inventories
-•	Translation: the English translation of the Norwegian word
-•	AoA: how old a child generally is was when they this this word, in months (Estimated from the MacArthur-Bates Communicative Development Inventories)
-•	VSoA: how many other words a child generally knows when they learn this word (rounded up to the nearest 10)
-•	Lex_cat: the specific part of speech of the word
-•	Broad_lex: the broad part of speech of the word
-•	Freq: a measure of how commonly this word occurs in Norwegian
-•	CDS_Freq: a measure of how commonly this word occurs when a Norwegian adult is talking to a Norwegian child
-Norwegian CDS Frequency
-•	Word_CDI: The word from, as found in the Norwegian adaptation of the MacArthur-Bates Communicative Development Inventories
-•	Translation: The English translation of the Norwegian word
-•	Freq_NoWaC: How often this word is used on the internet
-•	Freq_CDS: How often this word is used when talking to children (based on two Norwegian CHILDES corpora)
+* ID_CDI_I    	ID in the Norwegian CDI I (Kristoffersen et al. 2012)
+* ID_CDI_II    	ID in the Norwegian CDI II (Kristoffersen et al. 2012)
+* Word_NW    	Entry as given in the database Norwegian Words (Lind et al, 2015)
+* Word_CDI    	Entry as given in the CDI (Kristoffersen et al. 2012)
+* Translation  	English translation
+* AoA     	Age of acquisition: the age (in months) where 50% of the norming sample (Simonsen et al., 2014) are reported to produce the word
+* VSoA     	Vocabulary size of acquisition: the vocabulary size (in spans of 20 words) where 50% of the norming sample (Simonsen et al., 2014) are reported to produce the word
+* Lex_cat     	Lexical category as given by Kristoffersen et al. (2012)
+* Broad_lex     	Broad lexical category based on Bates et al. (1994)
+* Freq     	Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech
+* CDS_freq     	Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)
+
 
 ```{r}
 #install.packages('tidyverse')
