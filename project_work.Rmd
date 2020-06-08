@@ -1,8 +1,6 @@
 ---
-title: WORD ACQUISITION OF INFANTS AND TODDLERS
-output:
-  html_document:
-    df_print: paged
+title: "WORD ACQUISITION OF INFANTS AND TODDLERS"
+output: html_document
 ---
 ## Hypothesis
 This study has 2 hypotheses to prove. 
@@ -19,22 +17,35 @@ The main data consists of 732 words included in the Norwegian adaptation of MacA
 The dataset includes two files. The first table consists of information about 732 Norwegian words with translation to English, average children’ age of acquisition, average vocabulary size of children, lexical categories and frequencies of words in the Norwegian Web Corpus and child-directed speech (abbreviated as “CDS”.). The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo. Most relevant factors, which would be studied in this paper: word class, frequency of words in adults’ speech and vocabulary size of children.
 
 The main dataset includes information for 732 Norwegian words. A second table also includes measures of how frequently each word is used in Norwegian, both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The latter is commonly called “child directed speech” and is abbreviated as “CDS”. 
-Main data
-* ID_CDI_I    	ID in the Norwegian CDI I (Kristoffersen et al. 2012)
-* ID_CDI_II    	ID in the Norwegian CDI II (Kristoffersen et al. 2012)
-* Word_NW    	Entry as given in the database Norwegian Words (Lind et al, 2015)
-* Word_CDI    	Entry as given in the CDI (Kristoffersen et al. 2012)
-* Translation  	English translation
-* AoA     	Age of acquisition: the age (in months) where 50% of the norming sample (Simonsen et al., 2014) are reported to produce the word
-* VSoA     	Vocabulary size of acquisition: the vocabulary size (in spans of 20 words) where 50% of the norming sample (Simonsen et al., 2014) are reported to produce the word
-* Lex_cat     	Lexical category as given by Kristoffersen et al. (2012)
-* Broad_lex     	Broad lexical category based on Bates et al. (1994)
-* Freq     	Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech
-* CDS_freq     	Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)
+Main data:
+
+* **ID_CDI_I** (ID in the Norwegian CDI I (Kristoffersen et al. 2012));
+
+* **ID_CDI_II** (ID in the Norwegian CDI II (Kristoffersen et al. 2012));
+
+* **Word_NW** (Entry as given in the database Norwegian Words (Lind et al, 2015));
+
+* **Word_CDI** (Entry as given in the CDI (Kristoffersen et al. 2012));
+
+* **Translation** (English translation of each word);
+
+* **AoA** (Age of acquisition: the age (in months) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
+
+* **VSoA** (Vocabulary size of acquisition: the vocabulary size (in spans of 20 words) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
+
+* **Lex_cat** (Lexical category as given by Kristoffersen et al. (2012));
+
+* **Broad_lex** (Broad lexical category based on Bates et al. (1994));
+
+* **Freq** (Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech);
+
+* **CDS_freq** (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
 ```{r}
 #словарик
 # outliers - выбросы
 # the study hereto - эта работа
+# novelty - новизна
+# The scope of the study - масштаб, сфера, объем работы
 ```
 ```{r}
 #кладбище кода
