@@ -18,17 +18,149 @@ Main data
 * Broad_lex     	Broad lexical category based on Bates et al. (1994)
 * Freq     	Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech
 * CDS_freq     	Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)
-
-
 ```{r}
-#install.packages('tidyverse')
-library(tidyverse)
-main_data <- read_csv('main_data.csv')
-norwegian <- read_csv('Norwegian_CDS_frequency.csv')
+#словарик
+# outliers - выбросы
+
+#кладбище кода
+
+#если я хочу заменить все NA нулями
+#age_of_acquisition[is.na(age_of_acquisition)] <- 0
+#лучше работает штука из библиотеки imputeTS
+#data_4 <- na.replace(data_4, 0)
+
+#если я хочу найти, где конкретные значения в данных
+#which(grepl('#N/A', main_data$Lex_cat))
 
 ```
 
+```{r}
+#install.packages('tidyverse')
+#install.packages('imputeTS')
+```
 
+```{r}
+library(tidyverse)
+library(imputeTS)
+main_data <- read_csv('main_data.csv')
+norwegian <- read_csv('Norwegian_CDS_frequency.csv')
+#View(main_data)
+#View(norwegian)
+```
+В данных есть пропуски, которые надо заменить или удалить, чтобы построить верную модель
+
+```{r}
+# заменяем NA
+main_data$Lex_cat <- gsub('#N/A', 'other', main_data$Lex_cat)
+main_data$Lex_cat <- as.factor(main_data$Lex_cat)
+main_data$Broad_lex <- gsub('#N/A', 'other', main_data$Broad_lex)
+main_data$Broad_lex <- as.factor(main_data$Broad_lex)
+main_data$AoA <- as.numeric(main_data$AoA)
+main_data$AoA <- main_data$AoA[is.na(main_data$AoA)] <- 0
+main_data$VSoA <- as.numeric(main_data$VSoA)
+main_data$VSoA <- main_data$VSoA[is.na(main_data$VSoA)] <- 0
+main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
+main_data$CDS_freq <- main_data$CDS_freq[is.na(main_data$CDS_freq)] <- 0
+main_data$Freq <- as.numeric(main_data$Freq)
+main_data$Freq <- main_data$Freq[is.na(main_data$Freq)] <- 0
+```
+```{r}
+# удаляем NA
+#age_of_acquisition <- as.numeric(main_data$AoA)
+#age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
+#vocsize_of_acquisition <- as.numeric(main_data$VSoA)
+#vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
+#CDSfreq <- as.numeric(main_data$CDS_freq)
+#CDSfreq <- CDSfreq[!is.na(CDSfreq)]
+#freq <- as.numeric(main_data$Freq)
+#freq <- freq[!is.na(freq)]
+```
+Посмотрим наличие выбросов
+```{r}
+boxplot(age_of_acquisition, 
+        main = "Age of acquisition: outliers",
+        ylab = "age",
+        col = "pink",
+        border = "brown")
+boxplot(vocsize_of_acquisition,
+         main = "Vocabulary size of acquisition: outliers",
+        ylab = "vocabulary size",
+        col = "lavender",
+        border = "brown")
+```
+```{r}
+length(boxplot(age_of_acquisition)$out)
+```
+Выбросов, то есть слов, средний возраст усваивания которых выбивается из всего размаха, 20, медиана примерно в 25 месяцах, слова из датасета усваивают в возрасте от 15 до 35 месяцев 
+```{r}
+boxplot(main_data$AoA ~ main_data$Lex_cat, 
+        main = "Age of acquisition ~ lexical category",
+        xlab = "lexical category",
+        ylab = "age",
+        col = "pink",
+        border = "brown")
+boxplot(main_data$VSoA ~ main_data$Lex_cat,
+        main = "Vocabulary size of acquisition ~ lexical category",
+        xlab = "lexical category",
+        ylab = "vocabulary size",
+        col = "lavender",
+        border = "brown")
+
+```
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+#main_data2<-main_data[complete.cases(main_data),]
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
