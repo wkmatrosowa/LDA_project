@@ -1,9 +1,22 @@
 ---
-title: "Project"
-output: html_document
+title: WORD ACQUISITION OF INFANTS AND TODDLERS
+output:
+  html_document:
+    df_print: paged
 ---
+## Hypothesis
+This study has 2 hypotheses to prove. 
 
-# Content
+First is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to proved that children assimilate common nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech. Other hypothesis of the study is the suggestion that frequency of words in adults’ speech and the vocabulary size of children have strong correlation. According to the previous research on this topic (Hansen, 2016), we could also expect that adult frequency would be a significant predictor of age of acquisition within some classes of words. The author could possibly add supplementary task to this paper and construct a prediction model for part of speech learning.
+
+## Description of the data
+### Data collection method
+
+The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of data from 6500 monolingual Norwegian children. Important thing about CDI: their norms are typically cross-sectional, and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition.
+
+### Description of the data
+
+The dataset includes two files. The first table consists of information about 732 Norwegian words with translation to English, average children’ age of acquisition, average vocabulary size of children, lexical categories and frequencies of words in the Norwegian Web Corpus and child-directed speech (abbreviated as “CDS”.). The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo. Most relevant factors, which would be studied in this paper: word class, frequency of words in adults’ speech and vocabulary size of children.
 
 The main dataset includes information for 732 Norwegian words. A second table also includes measures of how frequently each word is used in Norwegian, both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The latter is commonly called “child directed speech” and is abbreviated as “CDS”. 
 Main data
@@ -21,13 +34,27 @@ Main data
 ```{r}
 #словарик
 # outliers - выбросы
-
+# the study hereto - эта работа
+```
+```{r}
 #кладбище кода
 
 #если я хочу заменить все NA нулями
 #age_of_acquisition[is.na(age_of_acquisition)] <- 0
 #лучше работает штука из библиотеки imputeTS
 #data_4 <- na.replace(data_4, 0)
+#Это тоже должно было работать, но не работает
+#main_data2<-main_data[complete.cases(main_data),]
+
+# вот так можно удалить все слова со значениями NA
+#age_of_acquisition <- as.numeric(main_data$AoA)
+#age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
+#vocsize_of_acquisition <- as.numeric(main_data$VSoA)
+#vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
+#CDSfreq <- as.numeric(main_data$CDS_freq)
+#CDSfreq <- CDSfreq[!is.na(CDSfreq)]
+#freq <- as.numeric(main_data$Freq)
+#freq <- freq[!is.na(freq)]
 
 #если я хочу найти, где конкретные значения в данных
 #which(grepl('#N/A', main_data$Lex_cat))
@@ -42,56 +69,45 @@ Main data
 ```{r}
 library(tidyverse)
 library(imputeTS)
+library(ggplot2)
 main_data <- read_csv('main_data.csv')
 norwegian <- read_csv('Norwegian_CDS_frequency.csv')
 #View(main_data)
 #View(norwegian)
 ```
+
 В данных есть пропуски, которые надо заменить или удалить, чтобы построить верную модель
 
 ```{r}
-# заменяем NA
+# заменяем NA там, где категория почему-то не указана
 main_data$Lex_cat <- gsub('#N/A', 'other', main_data$Lex_cat)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 main_data$Broad_lex <- gsub('#N/A', 'other', main_data$Broad_lex)
 main_data$Broad_lex <- as.factor(main_data$Broad_lex)
+```
+```{r}
+#заменяем NA на 0, чтобы сохранить все значения слов
 main_data$AoA <- as.numeric(main_data$AoA)
-main_data$AoA <- main_data$AoA[is.na(main_data$AoA)] <- 0
+main_data$AoA <- na.replace(main_data$AoA, 0)
 main_data$VSoA <- as.numeric(main_data$VSoA)
-main_data$VSoA <- main_data$VSoA[is.na(main_data$VSoA)] <- 0
+main_data$VSoA <- na.replace(main_data$VSoA, 0)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
-main_data$CDS_freq <- main_data$CDS_freq[is.na(main_data$CDS_freq)] <- 0
+main_data$CDS_freq <- na.replace(main_data$CDS_freq, 0)
 main_data$Freq <- as.numeric(main_data$Freq)
-main_data$Freq <- main_data$Freq[is.na(main_data$Freq)] <- 0
+main_data$Freq <- na.replace(main_data$Freq, 0)
+```
+
+```{r}
 ```
 ```{r}
-# удаляем NA
-#age_of_acquisition <- as.numeric(main_data$AoA)
-#age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
-#vocsize_of_acquisition <- as.numeric(main_data$VSoA)
-#vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
-#CDSfreq <- as.numeric(main_data$CDS_freq)
-#CDSfreq <- CDSfreq[!is.na(CDSfreq)]
-#freq <- as.numeric(main_data$Freq)
-#freq <- freq[!is.na(freq)]
+main_data %>%
+ggplot(aes(main_data$Lex_cat, fill=main_data$Lex_cat))+geom_bar()+
+        labs(title = "Distribution of lexical categories",
+             x = "lexical category")+scale_fill_discrete("Lexical categories")
 ```
+
 Посмотрим наличие выбросов
-```{r}
-boxplot(age_of_acquisition, 
-        main = "Age of acquisition: outliers",
-        ylab = "age",
-        col = "pink",
-        border = "brown")
-boxplot(vocsize_of_acquisition,
-         main = "Vocabulary size of acquisition: outliers",
-        ylab = "vocabulary size",
-        col = "lavender",
-        border = "brown")
-```
-```{r}
-length(boxplot(age_of_acquisition)$out)
-```
-Выбросов, то есть слов, средний возраст усваивания которых выбивается из всего размаха, 20, медиана примерно в 25 месяцах, слова из датасета усваивают в возрасте от 15 до 35 месяцев 
+
 ```{r}
 boxplot(main_data$AoA ~ main_data$Lex_cat, 
         main = "Age of acquisition ~ lexical category",
@@ -108,22 +124,59 @@ boxplot(main_data$VSoA ~ main_data$Lex_cat,
 
 ```
 ```{r}
-
+p <- ggplot(main_data, aes(main_data$Lex_cat, main_data$AoA, color=main_data$Lex_cat)) 
+p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") + 
+        labs(title = "Age of acquisition ~ lexical category",
+       x = "lexical category",
+       y = "age in months") + scale_colour_discrete("Lexical categories")
 ```
+
+```{r}
+p <- ggplot(main_data, aes(main_data$Lex_cat, main_data$VSoA, color=main_data$Lex_cat)) 
+p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") + 
+        labs(title = "Vocabulary size of acquisition ~ lexical category",
+       x = "lexical category",
+       y = "vocabulary size") + scale_colour_discrete("Lexical categories")
+```
+
+```{r}
+#Теперь надо удалить все значения NA, чтобы не рушить статистику
+age_of_acquisition <- as.numeric(main_data$AoA)
+age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
+vocsize_of_acquisition <- as.numeric(main_data$VSoA)
+vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
+CDSfreq <- as.numeric(main_data$CDS_freq)
+CDSfreq <- CDSfreq[!is.na(CDSfreq)]
+freq <- as.numeric(main_data$Freq)
+freq <- freq[!is.na(freq)]
+
+boxplot(age_of_acquisition, 
+        main = "Age of acquisition: outliers",
+        ylab = "age",
+        col = "pink",
+        border = "brown")
+boxplot(vocsize_of_acquisition,
+         main = "Vocabulary size of acquisition: outliers",
+        ylab = "vocabulary size",
+        col = "lavender",
+        border = "brown")
+```
+Выбросов, то есть слов, средний возраст усваивания которых выбивается из всего размаха, 20, медиана примерно в 25 месяцах, слова из датасета усваивают в возрасте от 15 до 35 месяцев 
 
 ```{r}
 
 ```
+## Statistical hypotheses to prove
+H0: mean ages of acquisition of different classes are similar.
+H1: mean ages of acquisition of different classes have variations
 
-```{r}
+H0: there is no correlation between frequencies of words in parents’ speech and the vocabulary size of children, the true correlation coefficient R is 0.
+H1: there is correlation between frequencies of words in parents’ speech and the vocabulary size, the true correlation coefficient R is not 0.
 
-```
-```{r}
+H0: there is no correlation between frequencies of words in parents’ speech and age of words acquisition, the true correlation coefficient R is 0.
+H1: there is correlation between frequencies of words in parents’ speech and age of words acquisition, the true correlation coefficient R is not 0.
 
-```
-```{r}
 
-```
 ```{r}
 
 ```
@@ -165,23 +218,3 @@ boxplot(main_data$VSoA ~ main_data$Lex_cat,
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
