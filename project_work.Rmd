@@ -8,7 +8,7 @@ This study has 2 hypotheses to prove.
 
 First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
 
-According to the previous work on this topic (Hansen, 2016), the author could also expect that frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition, but this statement needs to become approved. It is the other hypothesis of the study hereto.
+The author could also expect that frequency of each category in child directed speech and adults’ speech have strong correlation with age of acquisition of each word class. The general idea of the connection between these factors is that frequencies of each reproduced group of words could be the highest when children are the youngest. During their growing up children commence to remember and reproduce rarer classes of words. It is the second hypothesis of the study hereto.
 
 ## Description of the data
 
@@ -92,6 +92,32 @@ According to this information, the author decided to analyze *common nouns*, *pl
 #если я хочу найти, где конкретные значения в данных
 #which(grepl('#N/A', main_data$Lex_cat))
 
+
+#боксплоты про vocabulary size не нужны
+#boxplot(main_data$VSoA ~ main_data$Lex_cat,
+#        main = "Vocabulary size of acquisition ~ lexical category",
+#        xlab = "lexical category",
+#        ylab = "vocabulary size",
+#        col = "lavender",
+#        border = "brown")
+#boxplot(vocsize_of_acquisition,
+#         main = "Vocabulary size of acquisition: outliers",
+#        ylab = "vocabulary size",
+#        col = "lavender",
+#        border = "brown")
+#boxplot(main_data$VSoA ~ main_data$Broad_lex,
+#        main = "Vocabulary size of acquisition ~ broad lexical category",
+#        xlab = "broad lex category",
+#        ylab = "vocabulary size",
+#        col = "lavender",
+#        border = "brown")
+
+#еще боксплоты vocabulary size
+#p <- ggplot(main_data, aes(main_data$Lex_cat, main_data$VSoA, color=main_data$Lex_cat)) 
+#p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") + 
+#        labs(title = "Vocabulary size of acquisition ~ lexical category",
+#       x = "lexical category",
+#       y = "vocabulary size") + scale_colour_discrete("Lexical categories")
 ```
 
 ```{r}
@@ -135,7 +161,7 @@ main_data$Freq <- na_replace(main_data$Freq, 0)
 main_data %>%
 ggplot(aes(main_data$Lex_cat, fill=main_data$Lex_cat))+geom_bar()+
         labs(title = "Frequency of lexical categories",
-             x = "lexical category")+scale_fill_discrete("Lexical categories")+         theme_update(plot.title = element_text(hjust = 1.0))
+             x = "lexical category")+scale_fill_discrete("Lexical categories")
 ```
 ```{r}
 main_data %>%
@@ -153,12 +179,6 @@ boxplot(main_data$AoA ~ main_data$Broad_lex,
         ylab = "age",
         col = "pink",
         border = "brown")
-boxplot(main_data$VSoA ~ main_data$Broad_lex,
-        main = "Vocabulary size of acquisition ~ broad lexical category",
-        xlab = "broad lex category",
-        ylab = "vocabulary size",
-        col = "lavender",
-        border = "brown")
 
 ```
 
@@ -169,12 +189,6 @@ boxplot(main_data$AoA ~ main_data$Lex_cat,
         ylab = "age",
         col = "pink",
         border = "brown")
-boxplot(main_data$VSoA ~ main_data$Lex_cat,
-        main = "Vocabulary size of acquisition ~ lexical category",
-        xlab = "lexical category",
-        ylab = "vocabulary size",
-        col = "lavender",
-        border = "brown")
 
 ```
 ```{r}
@@ -183,14 +197,6 @@ p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") +
         labs(title = "Age of acquisition ~ lexical category",
        x = "lexical category",
        y = "age in months") + scale_colour_discrete("Lexical categories")
-```
-
-```{r}
-p <- ggplot(main_data, aes(main_data$Lex_cat, main_data$VSoA, color=main_data$Lex_cat)) 
-p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") + 
-        labs(title = "Vocabulary size of acquisition ~ lexical category",
-       x = "lexical category",
-       y = "vocabulary size") + scale_colour_discrete("Lexical categories")
 ```
 
 ```{r}
@@ -209,21 +215,24 @@ boxplot(age_of_acquisition,
         ylab = "age",
         col = "pink",
         border = "brown")
-boxplot(vocsize_of_acquisition,
-         main = "Vocabulary size of acquisition: outliers",
-        ylab = "vocabulary size",
-        col = "lavender",
-        border = "brown")
 ```
 Выбросов, то есть слов, средний возраст усваивания которых выбивается из всего размаха, 20, медиана примерно в 25 месяцах, слова из датасета усваивают в возрасте от 15 до 35 месяцев 
 
 ```{r}
-ggplot(data = main_data, aes(x = main_data$Word_CDI, y = main_data$AoA)) + 
+ggplot(data = main_data, aes(x = main_data$Word_CDI, y = main_data$AoA, col=main_data$Lex_cat)) + 
   geom_point() +
   labs(x = "words",
        y = "age",
-       title = "Words")
+       title = "Words")+scale_colour_discrete("Lexical categories")
 ```
+```{r}
+ggplot(data = main_data, aes(x = main_data$Word_CDI, y = main_data$AoA, col=main_data$Broad_lex)) + 
+  geom_point() +
+  labs(x = "words",
+       y = "age",
+       title = "Words")+scale_colour_discrete("Broad lex categories")
+```
+
 ```{r}
 ggplot(data = main_data, aes(x = main_data$Broad_lex, y = main_data$AoA, col=main_data$Broad_lex)) + 
   geom_point() +
@@ -238,6 +247,7 @@ ggplot(data = main_data, aes(x = main_data$Lex_cat, y = main_data$AoA, col=main_
        y = "age",
        title = "Words")+ scale_colour_discrete("Lexical categories")
 ```
+
 ## Statistical hypotheses to prove
 
 The main hypotheses of the piece of research are that children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives and frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition.
@@ -245,10 +255,15 @@ The main hypotheses of the piece of research are that children commence to repro
 * __H0__: mean ages of acquisition of different classes are similar.
 * __H1__: mean ages of acquisition of different classes have variations.
 
-* __H0__: there appears to be no correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
-* __H1__: there appears to be correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
+* __H0__: there appears to be no correlation/linear association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
+* __H1__: there appears to be correlation/linear association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
 
+Можно выбрать параметрический коэффициент r Пирсона, поскольку у нас мало выбросов, но также можно применить непараметрический коэффициент корреляции Спирмена и сравнить, что получится
+
+Для линейной регрессии выберем Rквадрат (коэффициент детерминации)
 (какой коэффициент корреляции выбрать?)
+
+Факторов у нас в целом не так много, поэтому проблем переобучения нет, и потребности в критериях Акаике и Байесовского информационного тоже не возникает
 
 ```{r}
 
