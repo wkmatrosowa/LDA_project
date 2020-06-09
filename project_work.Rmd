@@ -2,27 +2,27 @@
 title: "WORD ACQUISITION OF INFANTS AND TODDLERS"
 output: html_document
 ---
-## Hypothesis
+## Hypotheses
 
 This study has 2 hypotheses to prove. 
 
 First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
 
-According to the previous research on this topic (Hansen, 2016), the author could also expect that frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition, but this statement needs to become approved. It is the other hypothesis of the study hereto.
+According to the previous work on this topic (Hansen, 2016), the author could also expect that frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition, but this statement needs to become approved. It is the other hypothesis of the study hereto.
 
 ## Description of the data
 
 ### Data collection method
 
-The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of data from 6500 monolingual Norwegian children. Important thing about CDI: their norms are typically cross-sectional, and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition.
+The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories (abbreviated as "CDI") form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of averaged data from 6500 monolingual Norwegian children. Important thing about CDI: their norms are typically cross-sectional and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition. 
+
+This data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo.
 
 ### Description of the data
 
-The dataset includes two files. The first table consists of information about 732 Norwegian words with translation to English, average children’ age of acquisition, average vocabulary size of children, lexical categories and frequencies of words in the Norwegian Web Corpus and child-directed speech (abbreviated as “CDS”.). The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo. Most relevant factors, which would be studied in this paper: word class, frequency of words in adults’ speech and vocabulary size of children.
+The dataset includes two files. The main table consists of information about 732 Norwegian words with translation into English, average age of acquisition of each word, average vocabulary size reproduced by children, lexical and broad lexical categories of each word and frequencies of words in the Norwegian Web Corpus and child-directed speech (abbreviated as "CDS"). The "Norwegian CDS frequency" table replicates some columns from main data. The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child.
 
-The main dataset includes information for 732 Norwegian words. A second table also includes measures of how frequently each word is used in Norwegian, both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The latter is commonly called “child directed speech” and is abbreviated as “CDS”. 
-
-#### Main data
+### Main data columns
 
 * __ID_CDI_I__ (ID in the Norwegian CDI I (Kristoffersen et al. 2012));
 
@@ -46,9 +46,19 @@ The main dataset includes information for 732 Norwegian words. A second table al
 
 * __CDS_freq__ (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
 
-#### Main variables (factors)
+### Main factors
 
-**nouns - nominals, verbs - "action words", and adjectives - "descriptive words".**
+In the current dataset nouns are named as *common nouns*, *places to go*, *people* (in __Lex_cat__) and *nominals* (in __Broad_lex__). Some nouns are included in *games&routines* (both in __Lex_cat__ and __Broad_lex__), which also consists of interjections ('ja' = 'yes', 'nei' = 'no','hallo' = 'hello'), verbs ('vent' = 'wait') and constructions ('gå på do' = 'go to the bathroom', 'god natt' = 'good night'). 
+
+As a broad category, *nominals* comprise some interjections as *sound effects*(in __Lex_cat__).
+
+Most of all verbs are placed into *action words* category (in __Lex_cat__) and *predicates* (in __Broad_lex__). Furthermore, it is important to notice that adjectives are included in *predicates* (in __Broad_lex__) group, but they are named as *descriptive words* (in __Lex_cat__).
+
+Closed class words are represented in *closed-class items* (in __Lex_cat__), or *closed-class* (in __Broad_lex__).
+
+There appears to be *temporal* category which is not identified in the main data ('#N/A' category). It is composed of temporal nouns, prepositions and adverbs such as 'formiddag' =  'morning', 'nå' = 'now' and 'senere' = 'later'.
+
+According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class* as closed class words. The reason of this choice is that mixed categories are able to confuse models and results. Additional relevant factors for the paper are frequencies of words in adults’ speech and CDS.
 
 ```{r}
 #словарик
@@ -56,6 +66,8 @@ The main dataset includes information for 732 Norwegian words. A second table al
 # the study hereto - эта работа
 # novelty - новизна
 # The scope of the study - масштаб, сфера, объем работы
+
+#assume, deny, promise, refuse, suggest
 ```
 ```{r}
 #кладбище кода
@@ -101,9 +113,9 @@ norwegian <- read_csv('Norwegian_CDS_frequency.csv')
 
 ```{r}
 # заменяем NA там, где категория почему-то не указана
-main_data$Lex_cat <- gsub('#N/A', 'other', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('#N/A', 'temporal', main_data$Lex_cat)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
-main_data$Broad_lex <- gsub('#N/A', 'other', main_data$Broad_lex)
+main_data$Broad_lex <- gsub('#N/A', 'temporal', main_data$Broad_lex)
 main_data$Broad_lex <- as.factor(main_data$Broad_lex)
 main_data$Word_CDI <- as.factor(main_data$Word_CDI)
 ```
@@ -228,13 +240,13 @@ ggplot(data = main_data, aes(x = main_data$Lex_cat, y = main_data$AoA, col=main_
 ```
 ## Statistical hypotheses to prove
 
-The main hypotheses of the research are that children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives and frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition.
+The main hypotheses of the piece of research are that children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives and frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition.
 
 * __H0__: mean ages of acquisition of different classes are similar.
 * __H1__: mean ages of acquisition of different classes have variations.
 
-* __H0__: there is no correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
-* __H1__: there is correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
+* __H0__: there appears to be no correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
+* __H1__: there appears to be correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
 
 (какой коэффициент корреляции выбрать?)
 
