@@ -3,11 +3,15 @@ title: "WORD ACQUISITION OF INFANTS AND TODDLERS"
 output: html_document
 ---
 ## Hypothesis
+
 This study has 2 hypotheses to prove. 
 
-First is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to proved that children assimilate common nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech. Other hypothesis of the study is the suggestion that frequency of words in adults’ speech and the vocabulary size of children have strong correlation. According to the previous research on this topic (Hansen, 2016), we could also expect that adult frequency would be a significant predictor of age of acquisition within some classes of words. The author could possibly add supplementary task to this paper and construct a prediction model for part of speech learning.
+First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
+
+According to the previous research on this topic (Hansen, 2016), the author could also expect that frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition, but this statement needs to become approved. It is the other hypothesis of the study hereto.
 
 ## Description of the data
+
 ### Data collection method
 
 The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of data from 6500 monolingual Norwegian children. Important thing about CDI: their norms are typically cross-sectional, and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition.
@@ -17,29 +21,35 @@ The main data consists of 732 words included in the Norwegian adaptation of MacA
 The dataset includes two files. The first table consists of information about 732 Norwegian words with translation to English, average children’ age of acquisition, average vocabulary size of children, lexical categories and frequencies of words in the Norwegian Web Corpus and child-directed speech (abbreviated as “CDS”.). The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo. Most relevant factors, which would be studied in this paper: word class, frequency of words in adults’ speech and vocabulary size of children.
 
 The main dataset includes information for 732 Norwegian words. A second table also includes measures of how frequently each word is used in Norwegian, both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. The latter is commonly called “child directed speech” and is abbreviated as “CDS”. 
-Main data:
 
-* **ID_CDI_I** (ID in the Norwegian CDI I (Kristoffersen et al. 2012));
+#### Main data
 
-* **ID_CDI_II** (ID in the Norwegian CDI II (Kristoffersen et al. 2012));
+* __ID_CDI_I__ (ID in the Norwegian CDI I (Kristoffersen et al. 2012));
 
-* **Word_NW** (Entry as given in the database Norwegian Words (Lind et al, 2015));
+* __ID_CDI_II__ (ID in the Norwegian CDI II (Kristoffersen et al. 2012));
 
-* **Word_CDI** (Entry as given in the CDI (Kristoffersen et al. 2012));
+* __Word_NW__ (Entry as given in the database Norwegian Words (Lind et al, 2015));
 
-* **Translation** (English translation of each word);
+* __Word_CDI__ (Entry as given in the CDI (Kristoffersen et al. 2012));
 
-* **AoA** (Age of acquisition: the age (in months) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
+* __Translation__ (English translation of each word);
 
-* **VSoA** (Vocabulary size of acquisition: the vocabulary size (in spans of 20 words) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
+* __AoA__ (Age of acquisition: the age (in months) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
 
-* **Lex_cat** (Lexical category as given by Kristoffersen et al. (2012));
+* __VSoA__ (Vocabulary size of acquisition: the vocabulary size (in spans of 20 words) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
 
-* **Broad_lex** (Broad lexical category based on Bates et al. (1994));
+* __Lex_cat__ (Lexical category as given by Kristoffersen et al. (2012));
 
-* **Freq** (Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech);
+* __Broad_lex__ (Broad lexical category based on Bates et al. (1994));
 
-* **CDS_freq** (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
+* __Freq__ (Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech);
+
+* __CDS_freq__ (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
+
+#### Main variables (factors)
+
+**nouns - nominals, verbs - "action words", and adjectives - "descriptive words".**
+
 ```{r}
 #словарик
 # outliers - выбросы
@@ -53,7 +63,7 @@ Main data:
 #если я хочу заменить все NA нулями
 #age_of_acquisition[is.na(age_of_acquisition)] <- 0
 #лучше работает штука из библиотеки imputeTS
-#data_4 <- na.replace(data_4, 0)
+#data_4 <- na_replace(data_4, 0)
 #Это тоже должно было работать, но не работает
 #main_data2<-main_data[complete.cases(main_data),]
 
@@ -77,7 +87,7 @@ Main data:
 #install.packages('imputeTS')
 ```
 
-```{r}
+```{r, echo=FALSE}
 library(tidyverse)
 library(imputeTS)
 library(ggplot2)
@@ -95,29 +105,50 @@ main_data$Lex_cat <- gsub('#N/A', 'other', main_data$Lex_cat)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 main_data$Broad_lex <- gsub('#N/A', 'other', main_data$Broad_lex)
 main_data$Broad_lex <- as.factor(main_data$Broad_lex)
+main_data$Word_CDI <- as.factor(main_data$Word_CDI)
 ```
 ```{r}
-#заменяем NA на 0, чтобы сохранить все значения слов
+#заменяем NA на 0, чтобы сохранить все слова, и таблица 
 main_data$AoA <- as.numeric(main_data$AoA)
-main_data$AoA <- na.replace(main_data$AoA, 0)
+main_data$AoA <- na_replace(main_data$AoA, 0)
 main_data$VSoA <- as.numeric(main_data$VSoA)
-main_data$VSoA <- na.replace(main_data$VSoA, 0)
+main_data$VSoA <- na_replace(main_data$VSoA, 0)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
-main_data$CDS_freq <- na.replace(main_data$CDS_freq, 0)
+main_data$CDS_freq <- na_replace(main_data$CDS_freq, 0)
 main_data$Freq <- as.numeric(main_data$Freq)
-main_data$Freq <- na.replace(main_data$Freq, 0)
+main_data$Freq <- na_replace(main_data$Freq, 0)
 ```
 
-```{r}
-```
 ```{r}
 main_data %>%
 ggplot(aes(main_data$Lex_cat, fill=main_data$Lex_cat))+geom_bar()+
-        labs(title = "Distribution of lexical categories",
-             x = "lexical category")+scale_fill_discrete("Lexical categories")
+        labs(title = "Frequency of lexical categories",
+             x = "lexical category")+scale_fill_discrete("Lexical categories")+         theme_update(plot.title = element_text(hjust = 1.0))
 ```
-
+```{r}
+main_data %>%
+ggplot(aes(main_data$Broad_lex, fill=main_data$Broad_lex))+geom_bar()+
+        labs(title = "Frequency of broad lexical categories",
+             x = "broad lexical category")+scale_fill_discrete("Broad lexical categories")+
+        theme_update(plot.title = element_text(hjust = 1.0))
+```
 Посмотрим наличие выбросов
+
+```{r}
+boxplot(main_data$AoA ~ main_data$Broad_lex, 
+        main = "Age of acquisition ~ broad lexical category",
+        xlab = "broad lex category",
+        ylab = "age",
+        col = "pink",
+        border = "brown")
+boxplot(main_data$VSoA ~ main_data$Broad_lex,
+        main = "Vocabulary size of acquisition ~ broad lexical category",
+        xlab = "broad lex category",
+        ylab = "vocabulary size",
+        col = "lavender",
+        border = "brown")
+
+```
 
 ```{r}
 boxplot(main_data$AoA ~ main_data$Lex_cat, 
@@ -175,27 +206,39 @@ boxplot(vocsize_of_acquisition,
 Выбросов, то есть слов, средний возраст усваивания которых выбивается из всего размаха, 20, медиана примерно в 25 месяцах, слова из датасета усваивают в возрасте от 15 до 35 месяцев 
 
 ```{r}
-
+ggplot(data = main_data, aes(x = main_data$Word_CDI, y = main_data$AoA)) + 
+  geom_point() +
+  labs(x = "words",
+       y = "age",
+       title = "Words")
+```
+```{r}
+ggplot(data = main_data, aes(x = main_data$Broad_lex, y = main_data$AoA, col=main_data$Broad_lex)) + 
+  geom_point() +
+  labs(x = "broad lex category",
+       y = "age",
+       title = "Words")+scale_colour_discrete("Broad lex categories")
+```
+```{r}
+ggplot(data = main_data, aes(x = main_data$Lex_cat, y = main_data$AoA, col=main_data$Lex_cat)) + 
+  geom_point() +
+  labs(x = "lexical category",
+       y = "age",
+       title = "Words")+ scale_colour_discrete("Lexical categories")
 ```
 ## Statistical hypotheses to prove
-H0: mean ages of acquisition of different classes are similar.
-H1: mean ages of acquisition of different classes have variations
 
-H0: there is no correlation between frequencies of words in parents’ speech and the vocabulary size of children, the true correlation coefficient R is 0.
-H1: there is correlation between frequencies of words in parents’ speech and the vocabulary size, the true correlation coefficient R is not 0.
+The main hypotheses of the research are that children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives and frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition.
 
-H0: there is no correlation between frequencies of words in parents’ speech and age of words acquisition, the true correlation coefficient R is 0.
-H1: there is correlation between frequencies of words in parents’ speech and age of words acquisition, the true correlation coefficient R is not 0.
+* __H0__: mean ages of acquisition of different classes are similar.
+* __H1__: mean ages of acquisition of different classes have variations.
 
+* __H0__: there is no correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
+* __H1__: there is correlation/linear association between frequencies of words in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
+
+(какой коэффициент корреляции выбрать?)
 
 ```{r}
-
-```
-```{r}
-
-```
-```{r}
-#main_data2<-main_data[complete.cases(main_data),]
 
 ```
 ```{r}
@@ -224,6 +267,17 @@ H1: there is correlation between frequencies of words in parents’ speech and a
 ```
 ```{r}
 
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
 ```
 
 ```{r setup, include=FALSE}
