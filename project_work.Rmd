@@ -178,6 +178,30 @@ According to this information, the author decided to analyze *common nouns*, *pl
 ```
 
 ```{r}
+#лишний граф
+#pd <- position_dodge(0.1)
+#ggplot(target_cats, aes(x=Lex_cat, y=AoA, colour=Lex_cat, group=Lex_cat)) + 
+#    geom_errorbar(aes(ymin=AoAymin, ymax=AoAymax), colour="black", width=.1, position=pd) +
+#    geom_line(position=pd) +
+#    geom_point(position=pd, size=3, shape=21, fill="white") + # 21 is filled circle
+#    xlab("Lexical categories") +
+#    ylab("Age in months") +
+#    scale_colour_hue(name="Lexical categories",
+#                     breaks=c("AW", "CC", "CN", "DW", "P", "PTG")) +
+#    ggtitle("Between-group variance of influence on children lex. categories\' acquisition")
+
+#aov.data <- aov(data$acuracia ~ data$metodo, data=data)
+#anova(categories_acquisition)
+#tky <- TukeyHSD(aov.data, "data$metodo");
+#png("pertubacao-metodo.png",width=320,height=480)
+#plot(tky)
+#plot(TukeyHSD(categories_acquisition, "tension"), ylab="")
+
+#target_cats %>% mutate(AoAymin=AoA-(AoA*0.95)) -> target_cats
+#target_cats %>% mutate(AoAymax=AoA+(AoA*0.95)) -> target_cats
+```
+
+```{r}
 #install.packages('tidyverse')
 #install.packages('imputeTS')
 install.packages('sciplot')
@@ -188,7 +212,7 @@ library(tidyverse)
 library(imputeTS)
 library(ggplot2)
 library(dplyr)
-library(sciplot)
+#library(sciplot)
 main_data <- read_csv('main_data.csv')
 norwegian <- read_csv('Norwegian_CDS_frequency.csv')
 #View(main_data)
@@ -312,7 +336,7 @@ The main hypotheses of the piece of research are that children commence to repro
 
 ## Statistical tools and methods
 
-Выбрала Анову, так как она может показать, есть ли взаимосвязь между возрастом и частотностями слов из разных лексических категорий, а также построю линейную регрессию
+Выбрала Анову, так как она может показать, есть ли взаимосвязь между возрастом и словами из разных лексических категорий, а также построю линейную регрессию
 
 Можно выбрать параметрический коэффициент r Пирсона, поскольку у нас мало выбросов, но также можно применить непараметрический коэффициент корреляции Спирмена и сравнить, что получится
 
@@ -349,28 +373,18 @@ categories_acquisition
 summary(categories_acquisition)
 ```
 
+The p-value for F statistics is less than our significance level, so we reject the null hypothesis. Mean ages of acquisition of different classes are not the same.
 
 ```{r}
-TukeyHSD(categories_acquisition)
+tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
+tukey
 ```
 ```{r}
-
+plot(tukey , las=1 , col="brown")
 ```
 
+Чисто статистически получается так, что есть различия в том, в каком возрасте дети учат те или иные слова.
 
-```{r}
-
-ggplot(df, aes(x = target_cats$Lex_cat, y = target_cats$AoA)) +
-  geom_point(size = 4) 
-  #geom_errorbar(aes(ymax = U, ymin = L))
-
-```
-library(sciplot)
-lineplot.CI(data = target_cats, 
-            response = target_cats$AoA, 
-            x.factor = target_cats$Lex_cat)
-```
-```
 ```{r}
 
 ```
