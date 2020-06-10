@@ -384,15 +384,58 @@ plot(tukey , las=1 , col="brown")
 ```
 
 Чисто статистически получается так, что есть различия в том, в каком возрасте дети учат те или иные слова.
+```{r}
+# заменяем NA там, где категория почему-то не указана
+main_data$Lex_cat <- gsub('#N/A', 'temporal', main_data$Lex_cat)
+main_data$Broad_lex <- gsub('#N/A', 'temporal', main_data$Broad_lex)
+main_data$Word_CDI <- as.factor(main_data$Word_CDI)
+main_data$Lex_cat <- gsub('action words', 'verbs', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('descriptive words', 'adjectives', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('closed-class items', 'closedclass', main_data$Lex_cat)
+
+main_data$Lex_cat <- gsub('common nouns', 'nouns', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('places to go', 'nouns', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('people', 'nouns', main_data$Lex_cat)
+
+main_data$Broad_lex <- as.factor(main_data$Broad_lex)
+main_data$Lex_cat <- as.factor(main_data$Lex_cat)
+```
 
 ```{r}
+#удаляем данные с NA
+main_data$AoA <- as.numeric(main_data$AoA)
+main_data$VSoA <- as.numeric(main_data$VSoA)
+main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
+main_data$Freq <- as.numeric(main_data$Freq)
+main_data<-na.omit(main_data)
+```
 
+```{r}
+main_data %>% filter(Lex_cat=="verbs")-> verbs
+main_data %>% filter(Lex_cat=="adjectives")-> adjectives
+main_data %>% filter(Broad_lex=="closedclass")-> closedclass
+
+main_data %>% filter(Lex_cat=="nouns")-> nouns
+
+bind_rows(nouns, verbs, adjectives, closedclass) -> target_cats_new
+
+target_cats_new
+```
+
+```{r}
+categories_acquisition <- aov(target_cats_new$AoA ~ target_cats_new$Lex_cat)
+categories_acquisition
+summary(categories_acquisition)
+```
+
+The p-value for F statistics is still less than our significance level, so we reject the null hypothesis again. Mean ages of acquisition of different classes are not the same.
+
+```{r}
+tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
+tukey
 ```
 ```{r}
-
-```
-```{r}
-
+plot(tukey , las=1 , col="brown")
 ```
 ```{r}
 
