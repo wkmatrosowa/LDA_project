@@ -204,7 +204,8 @@ According to this information, the author decided to analyze *common nouns*, *pl
 ```{r}
 #install.packages('tidyverse')
 #install.packages('imputeTS')
-install.packages('sciplot')
+#install.packages('Hmisc')
+
 ```
 
 ```{r, echo=FALSE}
@@ -373,7 +374,7 @@ categories_acquisition
 summary(categories_acquisition)
 ```
 
-The p-value for F statistics is less than our significance level, so we reject the null hypothesis. Mean ages of acquisition of different classes are not the same.
+The p-value (2e-16) for F statistics is less than our significance level, so we reject the null hypothesis. Mean ages of acquisition of different classes are not the same.
 
 ```{r}
 tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
@@ -428,7 +429,7 @@ categories_acquisition
 summary(categories_acquisition)
 ```
 
-The p-value for F statistics is still less than our significance level, so we reject the null hypothesis again. Mean ages of acquisition of different classes are not the same.
+The p-value (0.00443) for F statistics is still less than our significance level, so we reject the null hypothesis again. Mean ages of acquisition of different classes are not the same.
 
 ```{r}
 tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
@@ -437,7 +438,22 @@ tukey
 ```{r}
 plot(tukey , las=1 , col="brown")
 ```
+Результаты парных сравнений методом Tukey показывают доверительные интервалы для разницы средних значений. Таким образом, на графике вы видите не средние значения, а разницу между парами средних значений: nouns-adjectives, verbs-adjectives, verbs-nouns. Это, в свою очередь, позволяет судить о различии средних значений.
+
+Если интервал не содержит нуль, существует статистически значимая разница между соответствующими средними значениями. Чем дальше результат от нуля, тем большая разница между средними значениями.
+Если же интервал содержит нуль, разница между средними значениями не является статистически значимой.
+
 ```{r}
+
+pd = position_dodge(0.4)
+ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) + 
+    stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8, position = pd)+ 
+    stat_summary(fun.data = mean_cl_boot, geom = 'line', size = 1.5, position = pd) +
+    stat_summary(fun.data = mean_cl_boot, geom = 'point', size = 5, position = pd, pch=15) +
+    theme_bw() + 
+   ggtitle("POS acquisition")+
+    xlab('POS')+
+    ylab('age in months') + scale_colour_discrete("POS")
 
 ```
 ```{r}
