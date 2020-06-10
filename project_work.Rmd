@@ -60,7 +60,7 @@ There appears to be *temporal* category which is not identified in the main data
 
 According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class* as closed class words. The reason of this choice is that mixed categories are able to confuse models and results. Additional relevant factors for the paper are frequencies of words in adults’ speech and CDS.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #словарик
 # outliers - выбросы
 # the study hereto - эта работа
@@ -69,7 +69,7 @@ According to this information, the author decided to analyze *common nouns*, *pl
 
 #assume, deny, promise, refuse, suggest
 ```
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #кладбище кода
 
 #Если нас интересует конкретная переменная
@@ -154,7 +154,7 @@ According to this information, the author decided to analyze *common nouns*, *pl
 #nouns <- na.omit(nouns)
 ```
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #отдельный кусок кладбища
 #Теперь надо удалить все значения NA, чтобы не рушить статистику
 #age_of_acquisition <- as.numeric(main_data$AoA)
@@ -177,7 +177,7 @@ According to this information, the author decided to analyze *common nouns*, *pl
 #res
 ```
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #лишний граф
 #pd <- position_dodge(0.1)
 #ggplot(target_cats, aes(x=Lex_cat, y=AoA, colour=Lex_cat, group=Lex_cat)) + 
@@ -201,13 +201,13 @@ According to this information, the author decided to analyze *common nouns*, *pl
 #target_cats %>% mutate(AoAymax=AoA+(AoA*0.95)) -> target_cats
 ```
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #install.packages('tidyverse')
 #install.packages('imputeTS')
 #install.packages('Hmisc')
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
 library(imputeTS)
 library(ggplot2)
@@ -230,7 +230,7 @@ main_data$Broad_lex <- as.factor(main_data$Broad_lex)
 main_data$Word_CDI <- as.factor(main_data$Word_CDI)
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
 #удаляем данные с NA
 main_data$AoA <- as.numeric(main_data$AoA)
 main_data$VSoA <- as.numeric(main_data$VSoA)
@@ -380,7 +380,8 @@ tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
 tukey
 ```
 ```{r}
-plot(tukey , las=1 , col="brown")
+par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
+plot(tukey, las=1, col="brown", cex.lab=2.5, cex.axis=0.7)
 ```
 
 Чисто статистически получается так, что есть различия в том, в каком возрасте дети учат те или иные слова.
@@ -440,8 +441,10 @@ tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
 tukey
 ```
 ```{r}
+par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey , las=1 , col="brown")
 ```
+
 Результаты парных сравнений методом Tukey показывают доверительные интервалы для разницы средних значений. Таким образом, на графике вы видите не средние значения, а разницу между парами средних значений: nouns-adjectives, verbs-adjectives, verbs-nouns. Это, в свою очередь, позволяет судить о различии средних значений.
 
 Если интервал не содержит нуль, существует статистически значимая разница между соответствующими средними значениями. Чем дальше результат от нуля, тем большая разница между средними значениями.
@@ -525,7 +528,7 @@ main_data %>%
   geom_line(aes(Freq, linreg1), color = "blue")+
   labs(x = "frequency in adult speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")
+       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
 ```
 
 График с доверительным интервалом
@@ -554,7 +557,7 @@ main_data %>%
   geom_line(aes(CDS_freq, linreg2), color = "blue")+
   labs(x = "frequency in adult speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")
+       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
 ```
 
 График с доверительным интервалом
@@ -579,7 +582,7 @@ p-value: 0.5253, поэтому нулевую гипотезу не отвер�
 ```{r}
 
 linreg3 <- lm(data = main_data, AoA ~ Freq + CDS_freq)
-main_data$linreg2 <- predict(linreg3)
+main_data$linreg3 <- predict(linreg3)
 summary(linreg3)
 
 ggplot(data = main_data, aes(Freq + CDS_freq, AoA, color=Lex_cat))+
@@ -587,7 +590,7 @@ ggplot(data = main_data, aes(Freq + CDS_freq, AoA, color=Lex_cat))+
   geom_line(aes(Freq + CDS_freq, linreg3), color = "blue")+
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")
+       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
 ```
 
 График без категорий
