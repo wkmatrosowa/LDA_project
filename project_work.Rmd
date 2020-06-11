@@ -8,7 +8,7 @@ This study has 2 hypotheses to prove.
 
 First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
 
-The author could also expect that frequency of each category in child directed speech and adults’ speech have linear negative association with age of acquisition of each word class. The general idea of the connection between these factors is that frequencies of each reproduced group of words could be the highest when children are the youngest. During their growing up children commence to remember and reproduce rarer classes of words. It is the second hypothesis of the study hereto.
+The author could also expect that frequency of each category in child directed speech and adults’ speech have linear negative association with age of acquisition of each word class. A general idea of connection between these factors is that frequencies of each reproduced group of words could be the highest when children are the youngest. During their growing up children commence to remember and reproduce rarer classes of words. It is the second hypothesis of the study hereto.
 
 ## Description of the data
 
@@ -58,7 +58,7 @@ Closed class words are represented in *closed-class items* (in __Lex_cat__), or 
 
 There appears to be *temporal* category which is not identified in the main data ('#N/A' category). It is composed of temporal nouns, prepositions and adverbs such as 'formiddag' -  'morning', 'nå' - 'now' and 'senere' - 'later'.
 
-According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class* as closed class words. The reason of this choice is that mixed categories are able to confuse models and results. Additional relevant factors for the paper are frequencies of words in adults’ and child directes speech and age of reproducing each word.
+According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class items* as closed class words. The reason of this choice is that mixed categories are able to confuse models and results. Additional relevant factors for the paper are frequencies of words in adults’ and child directes speech and age of each word's reproducing.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #словарик
@@ -68,143 +68,15 @@ According to this information, the author decided to analyze *common nouns*, *pl
 # The scope of the study - масштаб, сфера, объем работы
 
 #assume, deny, promise, refuse, suggest
-```
-```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#кладбище кода
-
-#Если нас интересует конкретная переменная
-#fielddata[fielddata$gender == "m",]
-
-#хочу выбрать значение
-#asp <- phono[phono$aspiration == "yes", ]
-
-#если я хочу заменить все NA нулями
-#age_of_acquisition[is.na(age_of_acquisition)] <- 0
-#лучше работает штука из библиотеки imputeTS
-#data_4 <- na_replace(data_4, 0)
-#Это тоже должно было работать, но не работает
-#main_data2<-main_data[complete.cases(main_data),]
-
-# вот так можно удалить все слова со значениями NA
-#age_of_acquisition <- as.numeric(main_data$AoA)
-#age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
-#vocsize_of_acquisition <- as.numeric(main_data$VSoA)
-#vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
-#CDSfreq <- as.numeric(main_data$CDS_freq)
-#CDSfreq <- CDSfreq[!is.na(CDSfreq)]
-#freq <- as.numeric(main_data$Freq)
-#freq <- freq[!is.na(freq)]
-
-#если я хочу найти, где конкретные значения в данных
-#which(grepl('#N/A', main_data$Lex_cat))
-
-
-#боксплоты про vocabulary size не нужны
-#boxplot(main_data$VSoA ~ main_data$Lex_cat,
-#        main = "Vocabulary size of acquisition ~ lexical category",
-#        xlab = "lexical category",
-#        ylab = "vocabulary size",
-#        col = "lavender",
-#        border = "brown")
-#boxplot(vocsize_of_acquisition,
-#         main = "Vocabulary size of acquisition: outliers",
-#        ylab = "vocabulary size",
-#        col = "lavender",
-#        border = "brown")
-#boxplot(main_data$VSoA ~ main_data$Broad_lex,
-#        main = "Vocabulary size of acquisition ~ broad lexical category",
-#        xlab = "broad lex category",
-#        ylab = "vocabulary size",
-#        col = "lavender",
-#        border = "brown")
-
-#еще боксплоты vocabulary size
-#p <- ggplot(main_data, aes(main_data$Lex_cat, main_data$VSoA, color=main_data$Lex_cat)) 
-#p + geom_boxplot() + facet_wrap(~main_data$Lex_cat, scale="free") + 
-#        labs(title = "Vocabulary size of acquisition ~ lexical category",
-#       x = "lexical category",
-#       y = "vocabulary size") + scale_colour_discrete("Lexical categories")
-
-#заменяем NA на 0, чтобы сохранить все слова, и таблица 
-#main_data$AoA <- as.numeric(main_data$AoA)
-#main_data$AoA <- na_replace(main_data$AoA, 0)
-#main_data$VSoA <- as.numeric(main_data$VSoA)
-#main_data$VSoA <- na_replace(main_data$VSoA, 0)
-#main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
-#main_data$CDS_freq <- na_replace(main_data$CDS_freq, 0)
-#main_data$Freq <- as.numeric(main_data$Freq)
-#main_data$Freq <- na_replace(main_data$Freq, 0)
-
-#удаляем данные с NA
-#main_data$AoA <- as.numeric(main_data$AoA)
-#main_data$AoA <- na_remove(main_data$AoA)
-#main_data$VSoA <- as.numeric(main_data$VSoA)
-#main_data$VSoA <- na_remove(main_data$VSoA)
-#main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
-#main_data$CDS_freq <- na_remove(main_data$CDS_freq)
-#main_data$Freq <- as.numeric(main_data$Freq)
-#main_data$Freq <- na_remove(main_data$Freq)
-#main_data <- na_remove(main_data)
-
-#несработавшие способы объединения
-#inner_join(common_nouns, places_to_go, by=c("Lex_cat"))
-
-#merge(x = common_nouns, y = places_to_go, by = "Lex_cat", all = TRUE) -> nouns_1
-#merge(x = nouns_1, y = people, by = "Lex_cat", all = TRUE) -> nouns
-#nouns <- na.omit(nouns)
+#ascertain, assert
+#anticipated - ожидаемый
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#отдельный кусок кладбища
-#Теперь надо удалить все значения NA, чтобы не рушить статистику
-#age_of_acquisition <- as.numeric(main_data$AoA)
-#age_of_acquisition <- age_of_acquisition[!is.na(age_of_acquisition)]
-#vocsize_of_acquisition <- as.numeric(main_data$VSoA)
-#vocsize_of_acquisition <- vocsize_of_acquisition[!is.na(vocsize_of_acquisition)]
-#CDSfreq <- as.numeric(main_data$CDS_freq)
-#CDSfreq <- CDSfreq[!is.na(CDSfreq)]
-#freq <- as.numeric(main_data$Freq)
-#freq <- freq[!is.na(freq)]
-
-#boxplot(age_of_acquisition, 
-#        main = "Age of acquisition: outliers",
-#        ylab = "age",
-#        col = "pink",
-#        border = "brown")
-
-#ANOVA with multiple groups:
-#res <- aov(phono$vowel.dur ~ phono$cons1 + phono$roundness)
-#res
-```
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#лишний граф
-#pd <- position_dodge(0.1)
-#ggplot(target_cats, aes(x=Lex_cat, y=AoA, colour=Lex_cat, group=Lex_cat)) + 
-#    geom_errorbar(aes(ymin=AoAymin, ymax=AoAymax), colour="black", width=.1, position=pd) +
-#    geom_line(position=pd) +
-#    geom_point(position=pd, size=3, shape=21, fill="white") + # 21 is filled circle
-#    xlab("Lexical categories") +
-#    ylab("Age in months") +
-#    scale_colour_hue(name="Lexical categories",
-#                     breaks=c("AW", "CC", "CN", "DW", "P", "PTG")) +
-#    ggtitle("Between-group variance of influence on children lex. categories\' acquisition")
-
-#aov.data <- aov(data$acuracia ~ data$metodo, data=data)
-#anova(categories_acquisition)
-#tky <- TukeyHSD(aov.data, "data$metodo");
-#png("pertubacao-metodo.png",width=320,height=480)
-#plot(tky)
-#plot(TukeyHSD(categories_acquisition, "tension"), ylab="")
-
-#target_cats %>% mutate(AoAymin=AoA-(AoA*0.95)) -> target_cats
-#target_cats %>% mutate(AoAymax=AoA+(AoA*0.95)) -> target_cats
-```
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#install.packages('tidyverse')
-#install.packages('imputeTS')
-#install.packages('Hmisc')
+install.packages('tidyverse')
+install.packages('imputeTS')
+install.packages('Hmisc')
+install.packages('car')
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
@@ -212,9 +84,9 @@ library(tidyverse)
 library(imputeTS)
 library(ggplot2)
 library(dplyr)
-main_data <- read_csv('main_data.csv')
-#View(main_data)
-#View(norwegian)
+library(car)
+main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
+head(main_data)
 ```
 
 ## Preprocessing
@@ -300,7 +172,7 @@ p + geom_boxplot() + facet_wrap(~Lex_cat, scale="free") +
        y = "age in months") + scale_colour_discrete("Lexical categories")
 ```
 
-The pictures below provide general information about each learned word and age of its acquisition.
+The pictures below provide general information about each learned word and age of its acquisition. Every point means a word.
 
 ```{r}
 ggplot(data = main_data, aes(x = Word_CDI, y = AoA, col=Broad_lex)) + 
@@ -335,30 +207,44 @@ ggplot(data = main_data, aes(x = Lex_cat, y = AoA, col=Lex_cat)) +
 
 ## Statistical hypotheses to prove
 
-The main hypotheses of the piece of research are that children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives and frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition. The statistical hypotheses based on the linguistic ones are:
+The main hypotheses of the piece of research are:
 
-* __H0__: mean ages of acquisition of different classes are similar.
-* __H1__: mean ages of acquisition of different classes have variations.
+* children commence to reproduce words of closed class after acquisition of nouns, verbs and adjectives;
 
-* __H0__: there appears to be no correlation/no linear negative or positive association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
-* __H1__: there appears to be correlation/linear negative or positive association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
+* frequency of words in child directed speech and adults’ speech within some classes have strong correlation with age of acquisition. 
+
+The statistical hypotheses based on the linguistic ones are:
+
+__First__
+
+* __H0__: ages of acquisition of different classes are similar.
+* __H1__: ages of acquisition of different classes have variations.
+
+__Second__
+
+* __H0__: there appears to be no correlation between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation Pearson's coefficient is 0.
+* __H1__: there appears to be correlation between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation Pearson's coefficient is not 0.
+
+__Third__
+
+* __H0__: there appears to be no linear (negative or positive) association between frequencies of categories in parents’ speech and age of words' acquisition.
+* __H1__: there appears to be linear (negative or positive) association between frequencies of categories in parents’ speech and age of words' acquisition.
+
+Both second and third hypotheses are connected with the second task of the study.
 
 ## Statistical tools and methods
 
-Выбрала Анову, так как она может показать, есть ли взаимосвязь между возрастом и словами из разных лексических категорий, а также построю линейную регрессию
+__First__
 
-Можно выбрать параметрический коэффициент r Пирсона, поскольку у нас мало выбросов, но также можно применить непараметрический коэффициент корреляции Спирмена и сравнить, что получится
+The author of the study hereto assert the first hypotheses with analysis of variance (*ANOVA*) method. *ANOVA* permits to show connections between more than 2 groups which is benefit for our main factors - parts of speech.
 
-Для линейной регрессии выберем Rквадрат (коэффициент детерминации)
-(какой коэффициент корреляции выбрать?)
+The second hypothesis is examined on *Pearson's correlation coefficient*. As we could observe above, the data have small amount of outliers and tied values, so it appears to be the most suitable evaluation of connection between word frequencies and age.
 
-Факторов у нас в целом не так много, поэтому проблем переобучения нет, и потребности в критериях Акаике и Байесовского информационного тоже не возникает
+We decide to use *linear regression* for understanding and analyzing if the connection exists and how strong it is.
 
 ### Connection between part of speech and age (ANOVA)
 
-#### Preprocessing of the data
-
-Estimates of **Main factors** part, some categories of words are not named as 
+#### Preprocessing for the first part
 
 ```{r}
 main_data %>% filter(Lex_cat=="action words")-> verbs
@@ -372,10 +258,10 @@ main_data %>% filter(Lex_cat=="people")-> people
 bind_rows(common_nouns, places_to_go, people) -> nouns
 bind_rows(nouns, verbs, adjectives, closedclass) -> target_cats
 
-target_cats
+head(target_cats)
 ```
 
-#### First attempt
+#### First attempt with suggested categories
 
 ```{r}
 categories_acquisition <- aov(target_cats$AoA ~ target_cats$Lex_cat)
@@ -383,30 +269,32 @@ categories_acquisition
 summary(categories_acquisition)
 ```
 
-The p-value (<2e-16) for F statistics is less than our significance level, so we reject the null hypothesis. Mean ages of acquisition of different classes are not the same.
+The p-value (<2e-16) for F statistics is less than our significance level, so we reject the null hypothesis. Mean ages of acquisition of different classes are not the same. We could check confidence values to visualise them.
 
 ```{r}
 tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
 tukey
 ```
+
 ```{r}
 par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey, las=1, col="brown", cex.lab=2.5, cex.axis=0.7)
 ```
 
-Чисто статистически получается так, что есть различия в том, в каком возрасте дети учат те или иные слова.
+As we could notice at the diagram, some categories have differences in age of learning. 
 
-#### Preprocessing
+#### Preprocessing for the second part
+
+Estimates of **Main factors** part, some categories of words should be renamed for further analysis.
 
 ```{r}
-# заменяем NA там, где категория почему-то не указана
+main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
 main_data$Lex_cat <- gsub('#N/A', 'temporal', main_data$Lex_cat)
 main_data$Broad_lex <- gsub('#N/A', 'temporal', main_data$Broad_lex)
 main_data$Word_CDI <- as.factor(main_data$Word_CDI)
 main_data$Lex_cat <- gsub('action words', 'verbs', main_data$Lex_cat)
 main_data$Lex_cat <- gsub('descriptive words', 'adjectives', main_data$Lex_cat)
 main_data$Lex_cat <- gsub('closed-class items', 'closedclass', main_data$Lex_cat)
-
 main_data$Lex_cat <- gsub('common nouns', 'nouns', main_data$Lex_cat)
 main_data$Lex_cat <- gsub('places to go', 'nouns', main_data$Lex_cat)
 main_data$Lex_cat <- gsub('people', 'nouns', main_data$Lex_cat)
@@ -415,8 +303,7 @@ main_data$Broad_lex <- as.factor(main_data$Broad_lex)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 ```
 
-```{r}
-#удаляем данные с NA
+```{r, message=FALSE, warning=FALSE, include=TRUE}
 main_data$AoA <- as.numeric(main_data$AoA)
 main_data$VSoA <- as.numeric(main_data$VSoA)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
@@ -428,15 +315,13 @@ main_data<-na.omit(main_data)
 main_data %>% filter(Lex_cat=="verbs")-> verbs
 main_data %>% filter(Lex_cat=="adjectives")-> adjectives
 main_data %>% filter(Lex_cat=="closedclass")-> closedclass
-
 main_data %>% filter(Lex_cat=="nouns")-> nouns
 
 bind_rows(nouns, verbs, adjectives, closedclass) -> target_cats_new
-
-target_cats_new
+head(target_cats_new)
 ```
 
-#### Second attempt
+#### Second attempt with parts of speech
 
 ```{r}
 categories_acquisition <- aov(target_cats_new$AoA ~ target_cats_new$Lex_cat)
@@ -450,10 +335,15 @@ The p-value (<2e-16) for F statistics is still less than our significance level,
 tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
 tukey
 ```
+
+
+
 ```{r}
 par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey , las=1 , col="brown")
 ```
+
+Both pictures of TukeyHSD plot show notable variations of confidence intervals for differences between mean values. 
 
 Результаты парных сравнений методом Tukey показывают доверительные интервалы для разницы средних значений. Таким образом, на графике вы видите не средние значения, а разницу между парами средних значений: nouns-adjectives, verbs-adjectives, verbs-nouns. Это, в свою очередь, позволяет судить о различии средних значений.
 
@@ -479,7 +369,7 @@ ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) +
 #### Preprocessing
 
 ```{r}
-# заменяем NA там, где категория почему-то не указана
+main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
 main_data$Lex_cat <- gsub('#N/A', 'temporal', main_data$Lex_cat)
 main_data$Broad_lex <- gsub('#N/A', 'temporal', main_data$Broad_lex)
 main_data$Word_CDI <- as.factor(main_data$Word_CDI)
@@ -496,7 +386,6 @@ main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 ```
 
 ```{r}
-#удаляем данные с NA
 main_data$AoA <- as.numeric(main_data$AoA)
 main_data$VSoA <- as.numeric(main_data$VSoA)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
@@ -504,15 +393,16 @@ main_data$Freq <- as.numeric(main_data$Freq)
 main_data<-na.omit(main_data)
 ```
 
-* __H0__: there appears to be no correlation/no linear negative association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is 0.
-* __H1__: there appears to be correlation/linear negative association between frequencies of categories in parents’ speech and age of words' acquisition, the true correlation coefficient R is not 0.
 
 Целевые переменные - Freq, CDS_freq and AoA
+
 
 ```{r}
 cor.test(main_data$Freq, main_data$AoA)
 
 ```
+
+
 ```{r}
 cor.test(main_data$CDS_freq, main_data$AoA)
 ```
@@ -621,13 +511,64 @@ ggplot(data = main_data, aes(x = CDS_freq + Freq, y = AoA)) +
 ```
 
 ```{r}
+main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
+main_data$Word_CDI <- as.factor(main_data$Word_CDI)
+main_data$Lex_cat <- gsub('action words', 'verbs', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('descriptive words', 'adjectives', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('closed-class items', 'closedclass', main_data$Lex_cat)
 
+main_data$Lex_cat <- gsub('common nouns', 'nouns', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('places to go', 'nouns', main_data$Lex_cat)
+main_data$Lex_cat <- gsub('people', 'nouns', main_data$Lex_cat)
+
+main_data$Broad_lex <- as.factor(main_data$Broad_lex)
+main_data$Lex_cat <- as.factor(main_data$Lex_cat)
+```
+
+```{r}
+main_data$AoA <- as.numeric(main_data$AoA)
+main_data$VSoA <- as.numeric(main_data$VSoA)
+main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
+main_data$Freq <- as.numeric(main_data$Freq)
+main_data<-na.omit(main_data)
+```
+
+```{r}
+contrasts(main_data$Lex_cat)
 ```
 ```{r}
-
+res <- model.matrix(~Lex_cat, data = main_data)
+res <- as.data.frame(res)
+bind_cols(main_data, res) -> main_data_model
+main_data_model
 ```
-```{r}
 
+```{r}
+library(car)
+linreg5 <- lm(AoA ~ Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives,
+             data = main_data_model)
+Anova(linreg5)
+summary(linreg5)
+main_data_model$linreg5 <- predict(linreg5)
+```
+
+```{r}
+ggplot(data = main_data_model, aes(Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, AoA, color=Lex_cat))+
+  geom_point()+
+  geom_line(aes(Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, linreg5), color = "blue")+
+  labs(x = "frequency in parents' speech",
+       y = "age of acquisition",
+       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
+```
+
+```{r}
+ggplot(data = main_data_model, aes(x = Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, y = AoA)) + 
+  geom_point() +
+  labs(x = "frequency in parents' speech",
+       y = "age of acquisition",
+       title = "Association between frequencies and age") +
+  geom_smooth(method=lm)
+  
 ```
 ```{r}
 
