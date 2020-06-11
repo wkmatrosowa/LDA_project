@@ -357,7 +357,7 @@ ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) +
 
 ```
 
-### Linear regression
+### Correlation
 
 #### Preprocessing
 
@@ -378,7 +378,7 @@ main_data$Broad_lex <- as.factor(main_data$Broad_lex)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE, include=TRUE}
 main_data$AoA <- as.numeric(main_data$AoA)
 main_data$VSoA <- as.numeric(main_data$VSoA)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
@@ -387,14 +387,12 @@ main_data<-na.omit(main_data)
 ```
 
 
-Целевые переменные - Freq, CDS_freq and AoA
+In the tests below the author investigates if there appears to be correlation between frequency of words in adults' speech and age, frequency of words in child directed speech and age, both of that factors and age.
 
 
 ```{r}
 cor.test(main_data$Freq, main_data$AoA)
-
 ```
-
 
 ```{r}
 cor.test(main_data$CDS_freq, main_data$AoA)
@@ -404,9 +402,20 @@ cor.test(main_data$CDS_freq, main_data$AoA)
 cor.test(main_data$Freq+main_data$CDS_freq, main_data$AoA)
 ```
 
-Тут я интерпретирую результаты корреляции...
+The results are:
 
-#### Смотрим на Freq
+1. Pearson's coefficient 0.08114762 and p-value 0.03359 for *Freq* and *AoA*
+2. Pearson's coefficient -0.02429178 and p-value 0.5253 for *CDS_freq* and *AoA*
+3. Pearson's coefficient 0.08112928 and p-value 0.03363 for *Freq* + *CDS_freq* and *AoA* 
+
+The first result proves that there appears to be correlation, but the coefficient is close to zero value. Though p-value is less than 0.05, it is rather close to 0.05. In the third result we can observe similar situation. The null hypothesis in these results should be rejected, but we do not see strong correlation between this factors. The author also emphasises that the second general hypothesis does not approved with this results. It was suggested that children have higher probability to learn earlier more frequent words but we see contrasting results. 
+
+The second p-value is more that 0.05. It means that we should accept the null hypothesis and deny the second main hypothesis in case of child directed speech frequency.
+
+
+### Linear regression
+
+#### Model with frequency of words in adults' speech
 
 График с категориями
 
@@ -435,9 +444,19 @@ ggplot(data = main_data, aes(x = Freq, y = AoA)) +
   geom_smooth(method=lm)
 ```
 
-#### Смотрим на CDS_freq
+```{r}
+linreg1.resid = resid(linreg1)
 
-График с категориями
+plot(main_data$AoA, linreg1.resid, 
+     ylab="age of acquisition", xlab="frequency in adult speech", 
+     main="Frequencies in adults' speech and age") 
+abline(0, 0) 
+```
+
+A residual is the vertical distance between a data point and the regression line. Each data point has one residual. They are positive if they are above the regression line and negative if they are below the regression line. If the regression line actually passes through the point, the residual at that point is zero.
+
+#### Model with frequency of words in CDS
+
 
 ```{r}
 linreg2 <- lm(data = main_data, AoA ~ CDS_freq)
