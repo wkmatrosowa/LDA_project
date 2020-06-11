@@ -281,7 +281,7 @@ par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey, las=1, col="brown", cex.lab=2.5, cex.axis=0.7)
 ```
 
-As we could notice at the diagram, some categories have differences in age of learning. 
+As we could notice at the diagram, some categories have not significant differences in age of learning: *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-common nouns*, *people-descriptive words*, *places to go-descriptive words* and *places to go-people*. *people-common nouns* and *places to go-people* could be explained by the fact that all words from that groups are nouns. But *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-descriptive words* and *places to go-descriptive words* are interesting cases because words from that pairs belong to different parts of speech. We could assume that in some cases part of speech or lexical category of some words do not influence age of reproducing that words.
 
 #### Preprocessing for the second part
 
@@ -329,21 +329,24 @@ categories_acquisition
 summary(categories_acquisition)
 ```
 
-The p-value (<2e-16) for F statistics is still less than our significance level, so we reject the null hypothesis again. Mean ages of acquisition of different classes are not the same.
+The p-value (<2e-16) for F statistics is same. It is still less than our significance level, so we reject the null hypothesis again. Mean ages of acquisition of different classes are not the same.
 
 ```{r}
 tukey <- TukeyHSD(x=categories_acquisition, conf.level=0.95)
 tukey
 ```
 
-
-
 ```{r}
 par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey , las=1 , col="brown")
 ```
 
-Both pictures of TukeyHSD plot show notable variations of confidence intervals for differences between mean values. 
+Both pictures of TukeyHSD plot show notable differences between mean values of POS pairs. 
+
+On the first graph 
+
+On the second graph *verbs-nouns* and *verbs-adjectives* intervals cross the 0 line. It shows that difference between that parts of speech is less statistical significant, than differences between other pairs of categories.
+
 
 Результаты парных сравнений методом Tukey показывают доверительные интервалы для разницы средних значений. Таким образом, на графике вы видите не средние значения, а разницу между парами средних значений: nouns-adjectives, verbs-adjectives, verbs-nouns. Это, в свою очередь, позволяет судить о различии средних значений.
 
