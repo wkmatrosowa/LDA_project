@@ -2,25 +2,35 @@
 title: "WORD ACQUISITION OF INFANTS AND TODDLERS"
 output: html_document
 ---
+
 ## Hypotheses
 
 This study has 2 hypotheses to prove. 
 
-First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper we tried to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
+First of them is that children memorize words of closed class after acquisition of particular amount of words from opened class. In this paper the author tries to prove that toddlers assimilate nouns earlier than verbs and adjectives, when closed class items are scarcer in their speech.
 
-The author also expect that frequency of each category in child directed speech and adults’ speech have linear negative association with age of acquisition of each word class. A general idea of connection between these factors is that frequencies of each reproduced group of words could be the highest when children are the youngest. During their growing up children commence to remember and reproduce rarer classes of words. It is the second hypothesis of the study hereto.
+The author also expects that frequency of each category in child directed speech and adults’ speech have linear negative association with age of acquisition of each word class. A general idea of connection between these factors is that frequencies of each reproduced group of words could be the highest when children are the youngest (in other words, infants have more probability to learn more frequent words as their first words). During their growing up children commence to remember rarer words. It is the second hypothesis of the study hereto.
+
+
+## Background
+
+Previous research on this topic
+
 
 ## Description of the data
 
+
 ### Data collection method
 
-The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories (abbreviated as "CDI") form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of averaged data from 6500 monolingual Norwegian children. Important thing about CDI: their norms are typically cross-sectional and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition. 
+The main data consists of 732 words included in the Norwegian adaptation of MacArthur-Bates Communicative Development Inventories (abbreviated as "CDI") form, a parental questionnaire demonstrated to give a valid and reliable measure of early lexical development. The Norwegian CDI norms consist of averaged data from 6500 monolingual Norwegian toddlers. Important thing about CDI: their norms are typically cross-sectional and can thus not be used to determine when each child acquired each word, only which words she or he currently produces (or understands). This limitation was circumvented by calculating the age in months where at least 50% of the children are reported to produce each word. It is commonly referred to the data as a word’s age of acquisition. 
 
 This data was collected by Pernille Hansen, PhD in linguistics at MultiLing, University of Oslo.
+
 
 ### Description of the data
 
 The dataset includes two files. The main table consists of information about 732 Norwegian words with translation into English, age of acquisition and vocabulary size reproduced by more that 50% of children when they learn words, lexical and broad lexical categories of each word and frequencies of words in the Norwegian Web Corpus, which is used to evaluate frequencies of words in adults' speech, and child-directed speech (abbreviated as "CDS"). The "Norwegian CDS frequency" table replicates some columns from main data. The second table includes measures of how frequently each word is used in Norwegian both on the internet (as observed in the Norwegian Web as Corpus dataset) and when an adult is talking to a child. It is a reason why the author of the piece of research explore only the first file.
+
 
 ### Main data columns
 
@@ -49,29 +59,19 @@ The dataset includes two files. The main table consists of information about 732
 
 ### Main factors
 
-In the current dataset nouns are named as *common nouns*, *places to go*, *people* (in __Lex_cat__) and *nominals* (in __Broad_lex__). Some nouns are included in *games&routines* (both in __Lex_cat__ and __Broad_lex__), which also consists of interjections ('ja' - 'yes', 'nei' - 'no','hallo' - 'hello'), verbs ('vent' - 'wait') and constructions ('gå på do' - 'go to the bathroom', 'god natt' - 'good night'). 
+In the current dataset nouns are named as *common nouns*, *places to go*, *people* (in __Lex_cat__) and *nominals* (in __Broad_lex__). Some nouns are included in *games&routines* (both in __Lex_cat__ and __Broad_lex__), which also consists of interjections ('ja' - 'yes', 'nei' - 'no','hallo' - 'hello'), verbs ('vent' - 'wait') and collocations ('gå på do' - 'go to the bathroom', 'god natt' - 'good night'). 
 
-As a broad category, *nominals* comprise some interjections as *sound effects*(in __Lex_cat__).
+As a broad category, *nominals* comprise some interjections as *sound effects* (in __Lex_cat__).
 
 Most of all verbs are placed into *action words* category (in __Lex_cat__) and *predicates* (in __Broad_lex__). Furthermore, it is important to notice that adjectives are included in *predicates* (in __Broad_lex__) group, but they are named as *descriptive words* (in __Lex_cat__).
 
-Closed class words are represented in *closed-class items* (in __Lex_cat__), or *closed-class* (in __Broad_lex__).
+Closed class words are supplied in *closed-class items* (in __Lex_cat__), or *closed-class* (in __Broad_lex__).
 
 There appears to be *temporal* category which is not identified in the main data ('#N/A' category). It is composed of temporal nouns, prepositions and adverbs such as 'formiddag' -  'morning', 'nå' - 'now' and 'senere' - 'later'.
 
-According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class items* as closed class words. The reason of this choice is that mixed categories are able to confuse models and results. Additional relevant factors for the paper are frequencies of words in adults’ and child directes speech and age of each word's reproducing.
+According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class items* as closed class words. The reason of this choice is that other categories are mixed. *games&routines* and *temporal* categories are able to confuse models and results. The author decided to remain *sound effects* category for further research on this topic. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#словарик
-# outliers - выбросы
-# the study hereto - эта работа
-# novelty - новизна
-# The scope of the study - масштаб, сфера, объем работы
-
-#assume, deny, promise, refuse, suggest
-#ascertain, assert
-#anticipated - ожидаемый
-```
+Additional relevant factors for the paper are frequencies of words in adults’ and child directes speech and age of each word's reproducing.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 install.packages('tidyverse')
@@ -80,7 +80,7 @@ install.packages('Hmisc')
 install.packages('car')
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE}
 library(tidyverse)
 library(imputeTS)
 library(ggplot2)
@@ -115,7 +115,7 @@ main_data<-na.omit(main_data)
 ```
 
 
-## Visualisation of the data
+## Introduction to the main data
 
 On the graphs below quantities of lexical and broad lexical categories are represented.
 
@@ -164,7 +164,7 @@ length(boxplot(main_data$AoA ~ main_data$Lex_cat,
 # [1] 27
 ```
 
-The diagrams below demonstrate outliers (words from which categories children reproduce earlier or later than significant majority of the studied words) separated by categories.
+The diagrams below demonstrate outliers (categories children reproduce earlier or later than significant majority of the studied words) separated by categories.
 
 ```{r}
 p <- ggplot(main_data, aes(Broad_lex, AoA, color=Broad_lex)) 
@@ -227,13 +227,13 @@ __First__
 
 The author of the study hereto assert the first hypotheses with analysis of variance (*ANOVA*) method. *ANOVA* permits to show connections between more than 2 groups which is benefit for our main factors - parts of speech.
 
-The second hypothesis is examined on *Pearson's correlation coefficient*. As we can observe above, the data have small amount of outliers and tied values, so it appears to be the most suitable evaluation of connection between word frequencies and age.
+The second hypothesis is examined with *Pearson's correlation coefficient*. As we can observe above, the data have small amount of outliers and tied values, so it appears to be the most suitable evaluation of connection between word frequencies and age.
 
 We decide to use *linear regression* for understanding and analyzing if the connection exists and how strong it is.
 
-### Connection between part of speech and age (ANOVA)
+## Connection between part of speech and age (ANOVA)
 
-#### Preprocessing for the first part
+### Preprocessing for the first part
 
 ```{r}
 main_data %>% filter(Lex_cat=="action words")-> verbs
@@ -250,7 +250,7 @@ bind_rows(nouns, verbs, adjectives, closedclass) -> target_cats
 head(target_cats)
 ```
 
-#### First attempt with suggested categories
+### First attempt with suggested categories
 
 ```{r}
 categories_acquisition <- aov(target_cats$AoA ~ target_cats$Lex_cat)
@@ -270,9 +270,9 @@ par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey, las=1, col="brown", cex.lab=2.5, cex.axis=0.7)
 ```
 
-As we can notice at the diagram and results of TukeyHSD analysis, some categories have not significant differences in age of learning: *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-common nouns*, *people-descriptive words*, *places to go-descriptive words* and *places to go-people*. *people-common nouns* and *places to go-people* could be explained by the fact that all words from that groups are nouns. But *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-descriptive words* and *places to go-descriptive words* are interesting cases because words from that pairs belong to different parts of speech. We are able to assume that in some cases part of speech or lexical category of some words do not influence age of reproducing that words.
+The diagram and results of TukeyHSD analysis prove that some categories have not significant differences in age of learning: *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-common nouns*, *people-descriptive words*, *places to go-descriptive words* and *places to go-people*. *people-common nouns* and *places to go-people* could be explained by the fact that all words from that groups are nouns. But *common nouns-action words*, *descriptive words-action words*, *places to go-action words*, *people-descriptive words* and *places to go-descriptive words* are interesting cases because words from that pairs belong to different parts of speech. We are able to assume that in some cases part of speech or lexical category of some words do not influence age of reproducing that words.
 
-#### Preprocessing for the second part
+### Preprocessing for the second part
 
 Estimates of **Main factors** part, some categories of words should be renamed for further analysis.
 
@@ -310,7 +310,7 @@ bind_rows(nouns, verbs, adjectives, closedclass) -> target_cats_new
 head(target_cats_new)
 ```
 
-#### Second attempt with parts of speech
+### Second attempt with parts of speech
 
 ```{r}
 categories_acquisition <- aov(target_cats_new$AoA ~ target_cats_new$Lex_cat)
@@ -330,15 +330,11 @@ par(mar=c(1,7,1,1)+3.5,mgp=c(6,1,0))
 plot(tukey , las=1 , col="brown")
 ```
 
-On this graph *verbs-nouns* and *verbs-adjectives* intervals cross the 0 line, and adjusted p-values of that pairs confirm that difference between that parts of speech is not statistical significant. It could be explained by the fact that children might acquire verbs together with nouns and adjectives in collocations. But other parts of speech demonstrate that some categories are reproduced by children of different ages. Here is the visualisation of connection between parts of speech and their acquisition.
+On this graph *verbs-nouns* and *verbs-adjectives* intervals cross the 0 line, and adjusted p-values of that pairs confirm that difference between that parts of speech is not statistical significant. It could be explained by the fact that children might acquire verbs together with nouns and adjectives in collocations and sentences. But other parts of speech demonstrate that some categories are reproduced by children of different ages. Here is the visualisation of connection between parts of speech and their acquisition.
 
 ```{r}
 pd = position_dodge(0.4)
 ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) +
-```
-
-
-```{r}
 stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8, position = pd)+ 
     stat_summary(fun.data = mean_cl_boot, geom = 'line', size = 1.5, position = pd) +
     stat_summary(fun.data = mean_cl_boot, geom = 'point', size = 5, position = pd, pch=15) +
@@ -349,9 +345,9 @@ stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8,
 
 ```
 
-### Correlation
+## Correlation
 
-#### Preprocessing
+### Preprocessing
 
 ```{r, message=FALSE, warning=FALSE, include=TRUE}
 main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
@@ -378,9 +374,7 @@ main_data$Freq <- as.numeric(main_data$Freq)
 main_data<-na.omit(main_data)
 ```
 
-
-In the tests below the author investigates if there appears to be correlation between frequency of words in adults' speech and age, frequency of words in child directed speech and age, both of that factors and age.
-
+In the tests below the author investigates if there appears to be correlation between frequencies of words in adults' speech and age, frequencies of words in child directed speech and age, both of that frequencies and age.
 
 ```{r}
 cor.test(main_data$Freq, main_data$AoA)
@@ -400,14 +394,14 @@ The results are:
 2. Pearson's coefficient -0.02429178 and p-value 0.5253 for *CDS_freq* and *AoA*
 3. Pearson's coefficient 0.08112928 and p-value 0.03363 for *Freq* + *CDS_freq* and *AoA* 
 
-The first result proves that there appears to be correlation, but the coefficient is close to zero value. Though p-value is less than 0.05, it is rather close to 0.05. In the third result we can observe similar situation. The null hypothesis in these results should be rejected, but we do not see strong correlation between this factors. The author also emphasises that the second general hypothesis does not approved with this results. It was suggested that children have higher probability to learn earlier more frequent words but we see contrasting results. 
+The first result proves that there appears to be correlation, but the coefficient is close to zero value. Though p-value is less than 0.05, it is rather close to 0.05, so the correlation is not strong. Note that it is observed similar situation in the third result. The null hypothesis in these results should be rejected. There appears to be not strong correlation between this factors. The author emphasises that the second general hypothesis does not approved with this results. It was suggested that toddlers have higher probability to learn more frequent words earlier but contrasting results are demonstrated. 
 
 The second p-value is more that 0.05. It means that we should accept the null hypothesis and deny the second main hypothesis in case of child directed speech frequency.
 
 
-### Linear regression
+## Linear regression
 
-#### Model with frequency of words in adults' speech
+### Model with frequency of words in adults' speech
 
 ```{r}
 require("scales")
@@ -433,18 +427,22 @@ main_data %>%
   scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
-The provided graph represents that there appears to be large spread of frequencies' values. It is a problem for finding the most reliable regression's line. As we are able to notice, p-value for F-statistics is 0.03359 and p-value for influece of frequencies is 0.0336. The graph with straight regression line is demonstrated below.
+The provided graph represents that there appears to be large spread of frequencies' values. It is a problem for finding the most reliable regression's line and verifing the second general hypothesis. As we are able to notice, p-value for F-statistics is 0.03359 and p-value for influece of frequencies is 0.0336. It is statistically significant but close to critical value.
+
+The graph with straight regression line and confidence interval is demonstrated below.
 
 ```{r}
 ggplot(data = main_data, aes(x = Freq, y = AoA)) + 
   geom_point() +
-  labs(x = "frequency in adult speech",
+  labs(x = "frequency in adults' speech",
        y = "age of acquisition",
-       title = "Frequency in adult speech and age") +
-  geom_smooth(method=lm)
+       title = "Frequency in adults' speech and age") +
+  geom_smooth(method=lm)+ theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
-In the picture below we are able to detect residuals. The most part of the main data is below or above zero line.
+The picture below detects residuals. The most part of the main data is below or above zero line. It proves that linear regression line poorly represents our data.
 
 ```{r}
 linreg1.resid = resid(linreg1)
@@ -455,7 +453,7 @@ plot(main_data$AoA, linreg1.resid,
 abline(0, 0) 
 ```
 
-#### Model with frequency of words in CDS
+### Model with frequency of words in CDS
 
 ```{r}
 linreg2 <- lm(data = main_data, AoA ~ CDS_freq)
@@ -469,22 +467,27 @@ main_data %>%
   labs(x = "frequency in CDS",
        y = "age of acquisition",
        title = "Frequencies in CDS and age")+ scale_colour_discrete("POS/category") +
-  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  theme(axis.text.x = element_text(size=8, margin = margin(t=10)))+
   scale_y_continuous(breaks=seq(0,60,3))+
   scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
-The provided graph represents that there appears to be large spread of frequencies' values. It is a problem for finding the most reliable regression's line. As we are able to notice, p-value for F-statistics is 0.03359 and p-value for influece of frequencies is 0.0336. The graph with straight regression line is demonstrated below.
+
+The picture displays that CDS frequencies also have large spread of values. High level of p-value claims that there does not appear to be a significant relation between frequency of word in CDS and age of learning of word. 
+
+The similar graph with straight regression line and confidence interval is presented below.
 
 ```{r}
 ggplot(data = main_data, aes(x = CDS_freq, y = AoA)) + 
   geom_point() +
-  geom_line(aes(CDS_freq, linreg2), color = "blue")+
-  labs(x = "frequency in child directed speech",
+  labs(x = "frequency in CDS",
        y = "age of acquisition",
-       title = "Frequencies in CDS and age") +
-  geom_smooth(method=lm)
-
+       title = "Frequency in CDS and age") +
+  geom_smooth(method=lm)+ theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
+
+Note majority of residuals in the picture below.
 
 ```{r}
 linreg2.resid = resid(linreg2)
@@ -495,10 +498,9 @@ plot(main_data$AoA, linreg2.resid,
 abline(0, 0) 
 ```
 
-#### Model with both frequencies
+### Model with both frequencies
 
 ```{r}
-
 linreg3 <- lm(data = main_data, AoA ~ Freq + CDS_freq)
 main_data$linreg3 <- predict(linreg3)
 summary(linreg3)
@@ -506,7 +508,7 @@ summary(linreg3)
 ggplot(data = main_data, aes(Freq + CDS_freq, AoA, color=Lex_cat))+
   geom_point()+
   geom_line(aes(Freq + CDS_freq, linreg3), color = "blue")+
-  labs(x = "frequency in parents' speech",
+  labs(x = "frequency",
        y = "age of acquisition",
        title = "Both frequencies and age")+ scale_colour_discrete("POS/category") +
   theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
@@ -514,6 +516,9 @@ ggplot(data = main_data, aes(Freq + CDS_freq, AoA, color=Lex_cat))+
   scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
+The picture expresses that combination of both frequencies leads to overfitting and errors in usage of linear regression. *683 degrees of freedom* is important factor for this result too.
+
+The possible graph with normal regression line and residuals' picture are given below.
 
 ```{r}
 ggplot(data = main_data, aes(x = CDS_freq + Freq, y = AoA)) + 
@@ -521,7 +526,10 @@ ggplot(data = main_data, aes(x = CDS_freq + Freq, y = AoA)) +
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
        title = "Both frequencies and age") +
-  geom_smooth(method=lm)
+  geom_smooth(method=lm)+
+   theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
   
 ```
 
@@ -534,120 +542,32 @@ plot(main_data$AoA, linreg3.resid,
 abline(0, 0) 
 ```
 
-```{r, message=FALSE, warning=FALSE, include=TRUE}
-main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
-main_data$Word_CDI <- as.factor(main_data$Word_CDI)
-main_data$Lex_cat <- gsub('action words', 'verbs', main_data$Lex_cat)
-main_data$Lex_cat <- gsub('descriptive words', 'adjectives', main_data$Lex_cat)
-main_data$Lex_cat <- gsub('closed-class items', 'closedclass', main_data$Lex_cat)
+This information outlines that it is necessary to do future work on studing connection between frequencies and ages with other predictive model. Other possible variant for future work on this problem is collecting more data on this topic.
 
-main_data$Lex_cat <- gsub('common nouns', 'nouns', main_data$Lex_cat)
-main_data$Lex_cat <- gsub('places to go', 'nouns', main_data$Lex_cat)
-main_data$Lex_cat <- gsub('people', 'nouns', main_data$Lex_cat)
 
-main_data$Broad_lex <- as.factor(main_data$Broad_lex)
-main_data$Lex_cat <- as.factor(main_data$Lex_cat)
-```
+## Explanation of the results
 
-```{r, message=FALSE, warning=FALSE, include=TRUE}
-main_data$AoA <- as.numeric(main_data$AoA)
-main_data$VSoA <- as.numeric(main_data$VSoA)
-main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
-main_data$Freq <- as.numeric(main_data$Freq)
-main_data<-na.omit(main_data)
-```
 
-```{r}
-res <- model.matrix(~Lex_cat, data = main_data)
-res <- as.data.frame(res)
-bind_cols(main_data, res) -> main_data_model
-head(main_data_model)
-```
+### ANOVA test
 
-```{r}
-linreg5 <- lm(AoA ~ Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives,
-             data = main_data_model)
-Anova(linreg5)
-summary(linreg5)
-main_data_model$linreg5 <- predict(linreg5)
-```
+Possible explanation of *ANOVA* results is that some words are acquired by children in phrases (for instance, 'kommer og tar deg' - 'gonna get you', the name of the game, includes different parts of speech in one name). In general, results prove that some words children repeat and understand later than others. For this paper it is important to ensure that there appears to be statistically significant connection between part of speech of the word and probability of its earlier or later acquisition. Generally speaking, the author asserts that nouns have higher probability to be memorized earlier than any other POS. Some verbs are learnt with nouns in collocations, but verbs' acquisition commences later. Clossed class items, such as pronouns and prepositions, are reproduced later then words from opened class categories.
 
-```{r}
-ggplot(data = main_data_model, aes(Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, AoA, color=Lex_cat))+
-  geom_point()+
-  geom_line(aes(Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, linreg5), color = "blue")+
-  labs(x = "frequency in parents' speech",
-       y = "age of acquisition",
-       title = "Frequencies + POS and age")+ scale_colour_discrete("POS/category") +
-  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
-  scale_y_continuous(breaks=seq(0,60,3))+
-  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
-```
+### Correlation test and linear regression
 
-```{r}
-ggplot(data = main_data_model, aes(x = Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, y = AoA)) + 
-  geom_point() +
-  labs(x = "frequency in parents' speech",
-       y = "age of acquisition",
-       title = "Frequencies + POS and age") +
-  geom_smooth(method=lm)
-  
-```
+The results on CDS test could be explained by the fact that children are able to memorize words accidentally. From child directed speech infants and toddlers might reproduce not the most or the least frequent words, but random ones. 
 
-```{r}
-linreg5.resid = resid(linreg5)
+Other results are complicated. To understand why the test and the graphs demonstrate correlation between adults' speech and age we should perform additional researches. One of possible explanations is that it is more important which words infants and toddlers hear from adults' different talks than from talks directed to them. Other one is that adults do not speak among themselves about topics and ideas which they could use in child directed speech. So, the frequencies of words which adults use in CDS are less in adults' speech than in CDS.
 
-plot(main_data$AoA, linreg5.resid, 
-     ylab="Residuals", xlab="age", 
-     main="Frequencies + POS and age") 
-abline(0, 0) 
-```
+Combination of both frequencies does not give any controversial results towards the previous ones. Linear regression might not be the most suitable method for studing this data because of dispersion in frequencies and other variations in them. 
 
-```{r}
+These statements could possibly become contradicted in future researches on this topic with enhanced data.
 
-```
-```{r}
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-
-```
-```{r}
-```
-```{r}
-
-```
 
 ## References
 
 ### Papers
+
+Garmann, N. G., Hansen, P., Simonsen, H. G., &amp; Kristoffersen, K. E. (2019). The Phonology of Children's Early Words: Trends, Individual Variation, and Parents' Accommodation in Child-Directed Speech. Frontiers in Communication, 4. doi:10.3389/fcomm.2019.00010
 
 Bates, E., Marchman, V., Thal, D., Fenson, L., Dale, P., Reznick, J. S., Reilly, J., & Hartung, J. (1994). Developmental and stylistic variation in the composition of early vocabulary. Journal of Child Language, 21(01), 85-123.
 Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved from http://childes.talkbank.org/data/PhonBank/Norwegian-Garmann.zip.
@@ -655,8 +575,6 @@ Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved f
 Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (in press). Phonological characteristics of children’s first words. In F. Chenu, S. Kern, & F. Gayraud (Eds.), Proceedings from the 3rd ELA conference. Newcastle upon Tyne, UK: Cambridge Scholars Publishing.
 
 Guevara, E. (2010). NoWaC: A large web-based corpus for Norwegian. Proceedings of the NAACL HLT 2010 Sixth Web as Corpus Workshop, 1-7. Retrieved from http://www.aclweb.org/anthology/W10-1501.
-
-Hansen, P (revised). What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. Manuscript submitted for publication.
 
 Kristoffersen, K. E., & Simonsen, H. G. (2012). Tidlig språkutvikling hos norske barn. MacArthur-Bates foreldrerapportering for kommunikativ utvikling [Early language development among Norwegian children. MacArthur-Bates Communicative Development Inventories]. Oslo: Novus Forlag.
 
@@ -669,8 +587,6 @@ Simonsen, H. G., Kristoffersen, K. E., Bleses, D., Wehberg, S., & Jørgensen, R.
 Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved from http://childes.talkbank.org/data/PhonBank/Norwegian-Garmann.zip.
 
 Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (in press). Phonological characteristics of children’s first words. In F. Chenu, S. Kern, & F. Gayraud (Eds.), Proceedings from the 3rd ELA conference. Newcastle upon Tyne, UK: Cambridge Scholars Publishing.
-
-Hansen, P (revised). What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. Manuscript submitted for publication.
 
 MacWhinney, B. (2000). The CHILDES project: Tools for analyzing talk (3rd ed.). Mahwah, NJ: Lawrence Erlbaum Associates.
 
