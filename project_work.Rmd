@@ -14,8 +14,13 @@ The author also expects that frequency of each category in child directed speech
 
 ## Background
 
-Previous research on this topic
+The previous research on this topic is provided by Pernille Hansen (Hansen, 2016). The purpose of her article *"What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development"* is to study two ideas. First, how individual and joint effects and also word class, frequency, imageability and phonological neighbourhood density influence lexical development of children. Second, how age of acquisition and vocabulary size are connected. Of her particular interest is the competition and interaction between the factors.
 
+*"Norwegian Words: A lexical database for clinicians and researchers"* (Lind, M. et al., 2015) describes the Norwegian Words database. Frequencies of words in adults' speech used in this paper are based on the results of that work.
+
+In *"The Phonology of Children's Early Words: Trends, Individual Variation, and Parents' Accommodation in Child-Directed Speech"* (Garmann et al., 2019) the authors focus on the phonological characteristics of children’s first words and on how parents accommodate to childrens' patterns in their speech.
+
+In contrast to previous works, this paper is mostly based on numeric variables with general parts of speech.
 
 ## Description of the data
 
@@ -34,15 +39,15 @@ The dataset includes two files. The main table consists of information about 732
 
 ### Main data columns
 
-* __ID_CDI_I__ (ID in the Norwegian CDI I (Kristoffersen et al. 2012));
+* __ID_CDI_I__ (ID in the Norwegian CDI I (Kristoffersen et al., 2012));
 
-* __ID_CDI_II__ (ID in the Norwegian CDI II (Kristoffersen et al. 2012));
+* __ID_CDI_II__ (ID in the Norwegian CDI II (Kristoffersen et al., 2012));
 
 * __Word_NW__ (Entry as given in the database Norwegian Words (Lind et al, 2015));
 
-* __Word_CDI__ (Entry as given in the CDI (Kristoffersen et al. 2012));
+* __Word_CDI__ (Entry as given in the CDI (Kristoffersen et al., 2012));
 
-* __Translation__ (English translation of each word);
+* __Translation__ (translation to English of each word);
 
 * __AoA__ (Age of acquisition: the age (in months) where 50% of the norming sample of children (Simonsen et al., 2014) are reported to produce the word);
 
@@ -52,7 +57,7 @@ The dataset includes two files. The main table consists of information about 732
 
 * __Broad_lex__ (Broad lexical category based on Bates et al. (1994));
 
-* __Freq__ (Frequency in the corpus Norwegian Web as Corpus (NoWaC) (Guevara 2010), taken to approximate frequency in adult speech);
+* __Freq__ (Frequency in the corpus Norwegian Web (Guevara, 2010), taken to approximate frequency in adults' speech);
 
 * __CDS_freq__ (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
 
@@ -71,7 +76,7 @@ There appears to be *temporal* category which is not identified in the main data
 
 According to this information, the author decided to analyze *common nouns*, *places to go* and *people* as nouns, *action words* as verbs, *descriptive words* as adjectives and *closed-class items* as closed class words. The reason of this choice is that other categories are mixed. *games&routines* and *temporal* categories are able to confuse models and results. The author decided to remain *sound effects* category for further research on this topic. 
 
-Additional relevant factors for the paper are frequencies of words in adults’ and child directes speech and age of each word's reproducing.
+Additional relevant factors for the paper are frequencies of words in adults’ and child directed speech and age of each word's reproducing.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 install.packages('tidyverse')
@@ -94,7 +99,7 @@ head(main_data)
 
 ## Preprocessing
 
-The data have missing values. First, we should rename gaps in lexical categories. '#N/A' strings there are located in rows with temporal nouns and prepositions, for instance, 'morgen' ('morning'), 'før' ('before').
+The data have missing values. First, we should rename gaps in lexical categories. '#N/A' strings there are located in rows with temporal nouns and prepositions (such as, for instance, 'morgen' - 'morning', 'før'- ('before').
 
 ```{r}
 main_data$Lex_cat <- gsub('#N/A', 'temporal', main_data$Lex_cat)
@@ -117,7 +122,7 @@ main_data<-na.omit(main_data)
 
 ## Introduction to the main data
 
-On the graphs below quantities of lexical and broad lexical categories are represented.
+On the bar charts below quantities of lexical and broad lexical categories are represented.
 
 ```{r}
 main_data %>%
@@ -161,10 +166,10 @@ length(boxplot(main_data$AoA ~ main_data$Lex_cat,
         col = "pink",
         border = "brown")$out)
 
-# [1] 27
+# [1] 22
 ```
 
-The diagrams below demonstrate outliers (categories children reproduce earlier or later than significant majority of the studied words) separated by categories.
+The boxplots below demonstrate outliers (categories children reproduce earlier or later than majority of the studied words) separated by categories.
 
 ```{r}
 p <- ggplot(main_data, aes(Broad_lex, AoA, color=Broad_lex)) 
@@ -182,6 +187,7 @@ p + geom_boxplot() + facet_wrap(~Lex_cat, scale="free") +
        y = "age in months") + scale_colour_discrete("Lexical categories")
 ```
 
+The distribution of children' ages.
 
 ```{r}
 ggplot(main_data, aes(x = AoA)) +
@@ -223,13 +229,11 @@ Both second and third hypotheses are connected with the second task of the study
 
 ## Statistical tools and methods
 
-__First__
-
 The author of the study hereto assert the first hypotheses with analysis of variance (*ANOVA*) method. *ANOVA* permits to show connections between more than 2 groups which is benefit for our main factors - parts of speech.
 
-The second hypothesis is examined with *Pearson's correlation coefficient*. As we can observe above, the data have small amount of outliers and tied values, so it appears to be the most suitable evaluation of connection between word frequencies and age.
+The second hypothesis is examined with *Pearson's correlation coefficient*. As we observe above, the data have ties and small amount of outliers, so it appears to be the most suitable evaluation of connection between word frequencies and age.
 
-We decide to use *linear regression* for understanding and analyzing if the connection exists and how strong it is.
+It is decided to use *linear regression* for understanding and analyzing if the connection exists and how strong it is.
 
 ## Connection between part of speech and age (ANOVA)
 
@@ -396,7 +400,7 @@ The results are:
 
 The first result proves that there appears to be correlation, but the coefficient is close to zero value. Though p-value is less than 0.05, it is rather close to 0.05, so the correlation is not strong. Note that it is observed similar situation in the third result. The null hypothesis in these results should be rejected. There appears to be not strong correlation between this factors. The author emphasises that the second general hypothesis does not approved with this results. It was suggested that toddlers have higher probability to learn more frequent words earlier but contrasting results are demonstrated. 
 
-The second p-value is more that 0.05. It means that we should accept the null hypothesis and deny the second main hypothesis in case of child directed speech frequency.
+The second p-value is more than 0.05. It means that we should accept the null hypothesis and deny the second main hypothesis in case of child directed speech frequency.
 
 
 ## Linear regression
@@ -556,7 +560,7 @@ Possible explanation of *ANOVA* results is that some words are acquired by child
 
 The results on CDS test could be explained by the fact that children are able to memorize words accidentally. From child directed speech infants and toddlers might reproduce not the most or the least frequent words, but random ones. 
 
-Other results are complicated. To understand why the test and the graphs demonstrate correlation between adults' speech and age we should perform additional researches. One of possible explanations is that it is more important which words infants and toddlers hear from adults' different talks than from talks directed to them. Other one is that adults do not speak among themselves about topics and ideas which they could use in child directed speech. So, the frequencies of words which adults use in CDS are less in adults' speech than in CDS.
+Other results are complicated. To understand why the test and the graphs demonstrate correlation between adults' speech and age we should perform additional researches. One of possible explanations is that it is more important which words infants and toddlers hear from adults' different talks than from talks directed to them. The second one is that adults do not speak among themselves about topics and ideas which they could use in child directed speech. According to this, we are able to guess that words from talks with children are less frequent in adults' speech. The third one is that Norwegian Web corpus is not suitable for evaluating adults' speech. It might be better to use colloquial or media corpuses for more precise results. So, the frequencies of words which adults use in CDS are less in adults' speech than in CDS.
 
 Combination of both frequencies does not give any controversial results towards the previous ones. Linear regression might not be the most suitable method for studing this data because of dispersion in frequencies and other variations in them. 
 
@@ -567,9 +571,12 @@ These statements could possibly become contradicted in future researches on this
 
 ### Papers
 
-Garmann, N. G., Hansen, P., Simonsen, H. G., &amp; Kristoffersen, K. E. (2019). The Phonology of Children's Early Words: Trends, Individual Variation, and Parents' Accommodation in Child-Directed Speech. Frontiers in Communication, 4. doi:10.3389/fcomm.2019.00010
+Hansen, P. (2016, December 06). What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. First Language, 1–21. doi: 10.1177/0142723716679956
+
+Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (2019). The Phonology of Children's Early Words: Trends, Individual Variation, and Parents' Accommodation in Child-Directed Speech. Frontiers in Communication, 4. doi:10.3389/fcomm.2019.00010
 
 Bates, E., Marchman, V., Thal, D., Fenson, L., Dale, P., Reznick, J. S., Reilly, J., & Hartung, J. (1994). Developmental and stylistic variation in the composition of early vocabulary. Journal of Child Language, 21(01), 85-123.
+
 Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved from http://childes.talkbank.org/data/PhonBank/Norwegian-Garmann.zip.
 
 Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (in press). Phonological characteristics of children’s first words. In F. Chenu, S. Kern, & F. Gayraud (Eds.), Proceedings from the 3rd ELA conference. Newcastle upon Tyne, UK: Cambridge Scholars Publishing.
