@@ -46,6 +46,7 @@ The dataset includes two files. The main table consists of information about 732
 
 * __CDS_freq__ (Frequency in child-directed speech based Simonsen (1990) and Garmann-Norwegian (Garmann, 2016; Garmann et al., in press)).
 
+
 ### Main factors
 
 In the current dataset nouns are named as *common nouns*, *places to go*, *people* (in __Lex_cat__) and *nominals* (in __Broad_lex__). Some nouns are included in *games&routines* (both in __Lex_cat__ and __Broad_lex__), which also consists of interjections ('ja' - 'yes', 'nei' - 'no','hallo' - 'hello'), verbs ('vent' - 'wait') and constructions ('gå på do' - 'go to the bathroom', 'god natt' - 'good night'). 
@@ -85,9 +86,11 @@ library(imputeTS)
 library(ggplot2)
 library(dplyr)
 library(car)
+library("scales")
 main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
 head(main_data)
 ```
+
 
 ## Preprocessing
 
@@ -111,6 +114,7 @@ main_data$Freq <- as.numeric(main_data$Freq)
 main_data<-na.omit(main_data)
 ```
 
+
 ## Visualisation of the data
 
 On the graphs below quantities of lexical and broad lexical categories are represented.
@@ -119,7 +123,9 @@ On the graphs below quantities of lexical and broad lexical categories are repre
 main_data %>%
 ggplot(aes(Broad_lex, fill=Broad_lex))+geom_bar()+
         labs(title = "Broad lexical categories: amount of words",
-             x = "broad lexical category")+scale_fill_discrete("Broad lexical categories")
+             x = "broad lexical category")+scale_fill_discrete("Broad lexical categories") +
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,400,50))
 ```
 
 
@@ -129,7 +135,9 @@ main_data %>%
 ggplot(aes(Lex_cat, fill=Lex_cat))+geom_bar()+
         labs(title = "Lexical categories: amount of words",
              x = "lexical category")+scale_fill_discrete("Lexical categories")+
-  theme(plot.margin = margin(1, 0, 1, 0))
+  theme(plot.margin = margin(1, 0, 1, 0))+
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,400,50))
 ```
 
 We are able to notice some outliers in the dataset.
@@ -142,6 +150,7 @@ length(boxplot(main_data$AoA ~ main_data$Broad_lex,
         col = "pink",
         border = "brown")$out)
 
+# [1] 32
 ```
 
 ```{r}
@@ -152,6 +161,7 @@ length(boxplot(main_data$AoA ~ main_data$Lex_cat,
         col = "pink",
         border = "brown")$out)
 
+# [1] 27
 ```
 
 The diagrams below demonstrate outliers (words from which categories children reproduce earlier or later than significant majority of the studied words) separated by categories.
@@ -172,38 +182,17 @@ p + geom_boxplot() + facet_wrap(~Lex_cat, scale="free") +
        y = "age in months") + scale_colour_discrete("Lexical categories")
 ```
 
-The pictures below provide general information about each learned word and age of its acquisition. Every point means a word.
 
 ```{r}
-ggplot(data = main_data, aes(x = Word_CDI, y = AoA, col=Broad_lex)) + 
-  geom_point() +
-  labs(x = "words",
-       y = "age in months",
-       title = "Words")+scale_colour_discrete("Broad lex categories")
+ggplot(main_data, aes(x = AoA)) +
+  geom_density(alpha=0.4, fill="lavender")+
+  geom_rug()+
+  labs(title = "Distribution of age of learning words",
+       x = "age in months")+
+  scale_x_continuous(breaks=seq(12,36,2)) +
+  scale_y_continuous(breaks=seq(0,0.2,0.02))
 ```
 
-```{r}
-ggplot(data = main_data, aes(x = Word_CDI, y = AoA, col=Lex_cat)) + 
-  geom_point() +
-  labs(x = "words",
-       y = "age in months",
-       title = "Words")+scale_colour_discrete("Lexical categories")
-```
-
-```{r}
-ggplot(data = main_data, aes(x = Broad_lex, y = AoA, col=Broad_lex)) + 
-  geom_point() +
-  labs(x = "broad lexical category",
-       y = "age in months",
-       title = "Words")+scale_colour_discrete("Broad lexical categories")
-```
-```{r}
-ggplot(data = main_data, aes(x = Lex_cat, y = AoA, col=Lex_cat)) + 
-  geom_point() +
-  labs(x = "lexical category",
-       y = "age in months",
-       title = "Words")+ scale_colour_discrete("Lexical categories")
-```
 
 ## Statistical hypotheses to prove
 
@@ -344,10 +333,13 @@ plot(tukey , las=1 , col="brown")
 On this graph *verbs-nouns* and *verbs-adjectives* intervals cross the 0 line, and adjusted p-values of that pairs confirm that difference between that parts of speech is not statistical significant. It could be explained by the fact that children might acquire verbs together with nouns and adjectives in collocations. But other parts of speech demonstrate that some categories are reproduced by children of different ages. Here is the visualisation of connection between parts of speech and their acquisition.
 
 ```{r}
-
 pd = position_dodge(0.4)
-ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) + 
-    stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8, position = pd)+ 
+ggplot(target_cats_new, aes(Lex_cat, AoA, color = Lex_cat)) +
+```
+
+
+```{r}
+stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8, position = pd)+ 
     stat_summary(fun.data = mean_cl_boot, geom = 'line', size = 1.5, position = pd) +
     stat_summary(fun.data = mean_cl_boot, geom = 'point', size = 5, position = pd, pch=15) +
     theme_bw() + 
@@ -417,12 +409,17 @@ The second p-value is more that 0.05. It means that we should accept the null hy
 
 #### Model with frequency of words in adults' speech
 
-График с категориями
-
 ```{r}
+require("scales")
 linreg1 <- lm(data = main_data, AoA ~ Freq)
 summary(linreg1)
 main_data$linreg1 <- predict(linreg1)
+
+base_breaks <- function(n = 10){
+    function(x) {
+        axisTicks(log10(range(x, na.rm = TRUE)), log = TRUE, n = n)
+    }
+}
 
 main_data %>% 
   ggplot(aes(Freq, AoA, color=Lex_cat))+
@@ -430,33 +427,35 @@ main_data %>%
   geom_line(aes(Freq, linreg1), color = "blue")+
   labs(x = "frequency in adult speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
+       title = "Frequency in adult speech and age")+ scale_colour_discrete("POS/category") +
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
-График с доверительным интервалом
+The provided graph represents that there appears to be large spread of frequencies' values. It is a problem for finding the most reliable regression's line. As we are able to notice, p-value for F-statistics is 0.03359 and p-value for influece of frequencies is 0.0336. The graph with straight regression line is demonstrated below.
 
 ```{r}
 ggplot(data = main_data, aes(x = Freq, y = AoA)) + 
   geom_point() +
   labs(x = "frequency in adult speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age") +
+       title = "Frequency in adult speech and age") +
   geom_smooth(method=lm)
 ```
+
+In the picture below we are able to detect residuals. The most part of the main data is below or above zero line.
 
 ```{r}
 linreg1.resid = resid(linreg1)
 
 plot(main_data$AoA, linreg1.resid, 
-     ylab="age of acquisition", xlab="frequency in adult speech", 
+     ylab="Residuals", xlab="age", 
      main="Frequencies in adults' speech and age") 
 abline(0, 0) 
 ```
 
-A residual is the vertical distance between a data point and the regression line. Each data point has one residual. They are positive if they are above the regression line and negative if they are below the regression line. If the regression line actually passes through the point, the residual at that point is zero.
-
 #### Model with frequency of words in CDS
-
 
 ```{r}
 linreg2 <- lm(data = main_data, AoA ~ CDS_freq)
@@ -467,12 +466,14 @@ main_data %>%
   ggplot(aes(CDS_freq, AoA, color=Lex_cat))+
   geom_point()+
   geom_line(aes(CDS_freq, linreg2), color = "blue")+
-  labs(x = "frequency in adult speech",
+  labs(x = "frequency in CDS",
        y = "age of acquisition",
-       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
+       title = "Frequencies in CDS and age")+ scale_colour_discrete("POS/category") +
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
-
-График с доверительным интервалом
+The provided graph represents that there appears to be large spread of frequencies' values. It is a problem for finding the most reliable regression's line. As we are able to notice, p-value for F-statistics is 0.03359 and p-value for influece of frequencies is 0.0336. The graph with straight regression line is demonstrated below.
 
 ```{r}
 ggplot(data = main_data, aes(x = CDS_freq, y = AoA)) + 
@@ -480,16 +481,21 @@ ggplot(data = main_data, aes(x = CDS_freq, y = AoA)) +
   geom_line(aes(CDS_freq, linreg2), color = "blue")+
   labs(x = "frequency in child directed speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age") +
+       title = "Frequencies in CDS and age") +
   geom_smooth(method=lm)
 
 ```
 
-p-value: 0.5253, поэтому нулевую гипотезу не отвергаем
+```{r}
+linreg2.resid = resid(linreg2)
 
-#### Смотрим на обе частотности сразу
+plot(main_data$AoA, linreg2.resid, 
+     ylab="Residuals", xlab="age", 
+     main="Frequencies CDS and age") 
+abline(0, 0) 
+```
 
-График с категориями
+#### Model with both frequencies
 
 ```{r}
 
@@ -502,27 +508,33 @@ ggplot(data = main_data, aes(Freq + CDS_freq, AoA, color=Lex_cat))+
   geom_line(aes(Freq + CDS_freq, linreg3), color = "blue")+
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
+       title = "Both frequencies and age")+ scale_colour_discrete("POS/category") +
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
-График без категорий
 
 ```{r}
 ggplot(data = main_data, aes(x = CDS_freq + Freq, y = AoA)) + 
   geom_point() +
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age") +
+       title = "Both frequencies and age") +
   geom_smooth(method=lm)
   
 ```
 
-Выводы по линейной регрессии и второй гипотезе
-
 ```{r}
+linreg3.resid = resid(linreg3)
+
+plot(main_data$AoA, linreg3.resid, 
+     ylab="Residuals", xlab="age", 
+     main="Both frequencies and age") 
+abline(0, 0) 
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE, include=TRUE}
 main_data <- read_csv('https://raw.githubusercontent.com/wksmirnowa/LDA_project/master/main_data.csv')
 main_data$Word_CDI <- as.factor(main_data$Word_CDI)
 main_data$Lex_cat <- gsub('action words', 'verbs', main_data$Lex_cat)
@@ -537,7 +549,7 @@ main_data$Broad_lex <- as.factor(main_data$Broad_lex)
 main_data$Lex_cat <- as.factor(main_data$Lex_cat)
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE, include=TRUE}
 main_data$AoA <- as.numeric(main_data$AoA)
 main_data$VSoA <- as.numeric(main_data$VSoA)
 main_data$CDS_freq <- as.numeric(main_data$CDS_freq)
@@ -546,17 +558,13 @@ main_data<-na.omit(main_data)
 ```
 
 ```{r}
-contrasts(main_data$Lex_cat)
-```
-```{r}
 res <- model.matrix(~Lex_cat, data = main_data)
 res <- as.data.frame(res)
 bind_cols(main_data, res) -> main_data_model
-main_data_model
+head(main_data_model)
 ```
 
 ```{r}
-library(car)
 linreg5 <- lm(AoA ~ Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives,
              data = main_data_model)
 Anova(linreg5)
@@ -570,7 +578,10 @@ ggplot(data = main_data_model, aes(Freq + CDS_freq + Lex_catclosedclass + Lex_ca
   geom_line(aes(Freq + CDS_freq + Lex_catclosedclass + Lex_catverbs + Lex_catnouns + Lex_catadjectives, linreg5), color = "blue")+
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age")+ scale_colour_discrete("POS/category")
+       title = "Frequencies + POS and age")+ scale_colour_discrete("POS/category") +
+  theme(axis.text.x = element_text(size=8, angle=47, margin = margin(t=10)))+
+  scale_y_continuous(breaks=seq(0,60,3))+
+  scale_x_continuous(trans = log_trans(), breaks=c(1,5, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 2e7))
 ```
 
 ```{r}
@@ -578,10 +589,20 @@ ggplot(data = main_data_model, aes(x = Freq + CDS_freq + Lex_catclosedclass + Le
   geom_point() +
   labs(x = "frequency in parents' speech",
        y = "age of acquisition",
-       title = "Association between frequencies and age") +
+       title = "Frequencies + POS and age") +
   geom_smooth(method=lm)
   
 ```
+
+```{r}
+linreg5.resid = resid(linreg5)
+
+plot(main_data$AoA, linreg5.resid, 
+     ylab="Residuals", xlab="age", 
+     main="Frequencies + POS and age") 
+abline(0, 0) 
+```
+
 ```{r}
 
 ```
@@ -623,6 +644,45 @@ ggplot(data = main_data_model, aes(x = Freq + CDS_freq + Lex_catclosedclass + Le
 ```{r}
 
 ```
+
+## References
+
+### Papers
+
+Bates, E., Marchman, V., Thal, D., Fenson, L., Dale, P., Reznick, J. S., Reilly, J., & Hartung, J. (1994). Developmental and stylistic variation in the composition of early vocabulary. Journal of Child Language, 21(01), 85-123.
+Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved from http://childes.talkbank.org/data/PhonBank/Norwegian-Garmann.zip.
+
+Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (in press). Phonological characteristics of children’s first words. In F. Chenu, S. Kern, & F. Gayraud (Eds.), Proceedings from the 3rd ELA conference. Newcastle upon Tyne, UK: Cambridge Scholars Publishing.
+
+Guevara, E. (2010). NoWaC: A large web-based corpus for Norwegian. Proceedings of the NAACL HLT 2010 Sixth Web as Corpus Workshop, 1-7. Retrieved from http://www.aclweb.org/anthology/W10-1501.
+
+Hansen, P (revised). What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. Manuscript submitted for publication.
+
+Kristoffersen, K. E., & Simonsen, H. G. (2012). Tidlig språkutvikling hos norske barn. MacArthur-Bates foreldrerapportering for kommunikativ utvikling [Early language development among Norwegian children. MacArthur-Bates Communicative Development Inventories]. Oslo: Novus Forlag.
+
+Lind, M., Simonsen, H. G., Hansen, P., Holm, E., & Mevik, B.-H. (2015). Norwegian Words: A lexical database for clinicians and researchers. Clinical Linguistics & Phonetics, 29(4), 276-290.
+
+Simonsen, H. G. (1990). Barns fonologi: System og variasjon hos tre norske og ett samoisk barn [Children's phonology: System and variation in three Norwegian children and one Samoan]. (PhD thesis), University of Oslo. 
+
+Simonsen, H. G., Kristoffersen, K. E., Bleses, D., Wehberg, S., & Jørgensen, R. N. (2014). The Norwegian Communicative Development Inventories: Reliability, main developmental trends and gender differences. First Language, 34(1), 3-23.
+
+Garmann, N. G. (2016). Garmann-Norwegian. [CHILDES/PhonBank corpus]. Retrieved from http://childes.talkbank.org/data/PhonBank/Norwegian-Garmann.zip.
+
+Garmann, N. G., Hansen, P., Simonsen, H. G., & Kristoffersen, K. E. (in press). Phonological characteristics of children’s first words. In F. Chenu, S. Kern, & F. Gayraud (Eds.), Proceedings from the 3rd ELA conference. Newcastle upon Tyne, UK: Cambridge Scholars Publishing.
+
+Hansen, P (revised). What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. Manuscript submitted for publication.
+
+MacWhinney, B. (2000). The CHILDES project: Tools for analyzing talk (3rd ed.). Mahwah, NJ: Lawrence Erlbaum Associates.
+
+Simonsen, H. G. (1990). Barns fonologi: System og variasjon hos tre norske og ett samoisk barn [Children's phonology: System and variation in three Norwegian children and one Samoan]. (PhD thesis), University of Oslo. 
+
+Simonsen, H. G., Kristoffersen, K. E., Bleses, D., Wehberg, S., & Jørgensen, R. N. (2014). The Norwegian Communicative Development Inventories: Reliability, main developmental trends and gender differences. First Language, 34(1), 3-23.
+
+### Data
+
+Hansen, P. (2016, December 06). Replication data for: What makes a word easy to acquire? The effects of word class, frequency, imageability and phonological neighbourhood density on lexical development. Retrieved June 12, 2020, from https://dataverse.no/dataset.xhtml?persistentId=doi%3A10.18710%2FJEWIVW
+
+(2003). CHILDES. Retrieved June 12, 2020, from https://childes.talkbank.org/
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
